@@ -22,7 +22,7 @@ pod '0x.swift'
 
 ## Author
 
-igor.shmakov@yahoo.com, igor.shmakov@yahoo.com
+[Igor Shmakov](shmakoff.work@gmail.com) [Vadim Koleoshkin](vadim@koleoshkin.com) [Ivan Grachev](mail@grachyov.com)
 
 ## License
 
