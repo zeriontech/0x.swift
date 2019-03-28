@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
   s.name             = '0x.swift'
   s.version          = '0.1.0'
-  s.summary          = 'A short description of 0x.swift.'
+  s.summary          = 'A Swift library for interacting with the 0x protocol.'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -22,7 +22,7 @@ TODO: Add long description of the pod here.
                        DESC
 
   s.homepage         = 'https://github.com/Tokenary/0x.swift'
-  s.license          = { :type => 'MIT', :file => 'LICENSE' }
+  s.license          = { :type => 'Apache License 2.0', :file => 'LICENSE' }
   s.author           = { 
     'Igor Shmakov' => 'shmakoff.work@gmail.com',
     'Vadim Koleoshkin' => 'vadim@koleoshkin.com'
@@ -35,10 +35,10 @@ TODO: Add long description of the pod here.
   s.watchos.deployment_target = '3.0'
 
   s.swift_version = '4.2'
-  s.source_files = '0x.swift/Classes/**/*'
+  s.source_files = '0x.swift/**/*'
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
+  s.dependency 'Web3Swift.io', '~> 0.0.2'
 
 end

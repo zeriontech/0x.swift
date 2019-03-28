@@ -1,11 +1,12 @@
 use_frameworks!
+platform :ios, '10.0'
 
 target '0x.swift_Example' do
-  pod '0x.swift', :path => '../'
+    pod '0x.swift', :path => '../'
+end
 
-  target '0x.swift_Tests' do
-    inherit! :search_paths
-
-    
-  end
+target '0x.swift_Tests' do
+    pod '0x.swift', :path => '../'
+    pod 'Quick', '~> 2.0'
+    pod 'Nimble', '~> 8.0'
 end
