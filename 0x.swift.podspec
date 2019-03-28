@@ -21,22 +21,24 @@ Pod::Spec.new do |s|
 TODO: Add long description of the pod here.
                        DESC
 
-  s.homepage         = 'https://github.com/igor.shmakov@yahoo.com/0x.swift'
-  # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
+  s.homepage         = 'https://github.com/Tokenary/0x.swift'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'igor.shmakov@yahoo.com' => 'igor.shmakov@yahoo.com' }
-  s.source           = { :git => 'https://github.com/igor.shmakov@yahoo.com/0x.swift.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
-
-  s.ios.deployment_target = '8.0'
-
-  s.source_files = '0x.swift/Classes/**/*'
+  s.author           = { 
+    'Igor Shmakov' => 'shmakoff.work@gmail.com',
+    'Vadim Koleoshkin' => 'vadim@koleoshkin.com'
+  }
+  s.source           = { :git => 'https://github.com/Tokenary/0x.swift.git', :tag => s.version.to_s }
   
-  # s.resource_bundles = {
-  #   '0x.swift' => ['0x.swift/Assets/*.png']
-  # }
+  s.ios.deployment_target = '10.0'
+  s.osx.deployment_target = '10.12'
+  s.tvos.deployment_target = '10.0'
+  s.watchos.deployment_target = '3.0'
+
+  s.swift_version = '4.2'
+  s.source_files = '0x.swift/Classes/**/*'
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
   # s.dependency 'AFNetworking', '~> 2.3'
+
 end
