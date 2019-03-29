@@ -21,8 +21,10 @@ protocol ExchangeContract {
     
 }
 
+// Empty Ethereum address
 protocol EmptyAddress {
     
+    // 0x0000000000000000000000000000000000000000
     var address: EthAddress { get }
     
 }
@@ -33,6 +35,7 @@ protocol TxHash {
     
 }
 
+// An order message consists of the following parameters:
 protocol Order {
     
     // Address that created the order.
@@ -73,6 +76,7 @@ protocol Order {
     
 }
 
+// Could not be fetched from tx
 protocol FillResults {
     
     // Total amount of makerAsset(s) filled.
@@ -88,6 +92,7 @@ protocol FillResults {
     var takerFeePaid: EthNumber { get }
 }
 
+// Information about the order and its state.
 protocol OrderInfo {
     
     // Status that describes order's validity and fillability.
