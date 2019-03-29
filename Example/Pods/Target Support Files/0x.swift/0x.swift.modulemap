@@ -1,6 +1,0 @@
-framework module _0x_swift {
-  umbrella header "0x.swift-umbrella.h"
-
-  export *
-  module * { export * }
-}
