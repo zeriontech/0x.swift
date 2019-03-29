@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
   s.description      = <<-DESC
-TODO: Add long description of the pod here.
+A Swift library for interacting with the 0x protocol smart contracts 
                        DESC
 
   s.homepage         = 'https://github.com/Tokenary/0x.swift'
@@ -34,6 +34,7 @@ TODO: Add long description of the pod here.
   s.tvos.deployment_target = '10.0'
   s.watchos.deployment_target = '3.0'
 
+  s.module_name = 'Swifty0x'
   s.swift_version = '4.2'
   s.source_files = '0x.swift/**/*'
 
