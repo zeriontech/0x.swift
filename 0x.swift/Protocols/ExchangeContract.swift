@@ -14,9 +14,9 @@ import Web3Swift
 protocol ExchangeContract {
     
     func fillOrder(
-        order: Order,
-        takerAssetFillAmount: EthNumber,
-        signature: OrderSignature
+        order: SignedOrder,
+        takerAssetFillAmount: EthNumber
+        //transactionParams: OrderTransactionParams? // TODO: Probably move it to later
     ) throws -> TxHash
     
 }
@@ -63,16 +63,16 @@ protocol Order {
     var takerFee: EthNumber { get }
     
     // Timestamp in seconds at which order expires.
-    var expirationTimeSeconds: EthNumber { get }
+    var expirationTimeSeconds: ExpirationDateTime { get }
     
     // Arbitrary number to facilitate uniqueness of the order's hash.
-    var salt: EthNumber { get }
+    var salt: Salt { get }
     
     // ABIv2 encoded data that can be decoded by a specified proxy contract when transferring makerAsset.
-    var makerAssetData: BytesScalar { get }
+    var makerAssetData: EncodedAssetData { get }
     
     // ABIv2 encoded data that can be decoded by a specified proxy contract when transferring takerAsset.
-    var takerAssetData: BytesScalar { get }
+    var takerAssetData: EncodedAssetData { get }
     
 }
 
@@ -105,15 +105,88 @@ protocol OrderInfo {
     var takerAssetFilledAmount: EthNumber { get }
 }
 
+// Describes Order signature
 protocol OrderSignature {
     
     // Signature proof that orders have been created by makers.
     var signature: BytesScalar { get }
     
-    // EIP712 hash of the order (see LibOrder.getOrderHash).
-    var hash: FixedLengthBytes { get }
-    
     // Order maker address
     var signer: EthAddress { get }
+    
+}
+
+protocol OrderHash {
+    var hash: FixedLengthBytes { get }
+}
+
+// Signed Order object consists of Order and Signature objects
+protocol SignedOrder {
+    
+    var order: Order { get }
+    
+    var signature: OrderSignature { get }
+    
+    // EIP712 hash of the order (see LibOrder.getOrderHash).
+    var hash: OrderHash { get }
+    
+}
+
+// Salt generator object
+protocol Salt {
+    
+    func value() -> EthNumber
+    
+}
+
+// Object describes a set of transaction params
+protocol OrderTransactionParams {
+    
+    var gasLimit: EthNumber? { get }
+    
+    var gasPrice: EthNumber? { get }
+    
+    var nonce: EthNumber? { get }
+    
+}
+
+// ERC20 Asset data
+protocol ERC20AssetData: AssetData {
+    
+    var token: EthAddress { get }
+    
+    func data() -> AssetData
+    
+}
+
+// ERC721 Asset data
+protocol ERC721AssetData: AssetData {
+    
+    var token: EthAddress { get }
+    
+    var tokenId: EthNumber { get }
+    
+}
+
+// Describes different assets data types
+protocol AssetData {
+    
+    var id: HexString { get }
+    
+    func data() -> EncodedAssetData
+    
+}
+
+// Describes encoded asset data type
+protocol EncodedAssetData {
+    
+    var data: BytesScalar { get }
+    
+}
+
+// Object represent expiration datetime 
+protocol ExpirationDateTime {
+    
+    var timestamp: EthNumber { get }
     
 }
