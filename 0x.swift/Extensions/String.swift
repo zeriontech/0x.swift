@@ -3,17 +3,16 @@
 // Copyright 2019 The 0x.swift Authors
 // Licensed under Apache License v2.0
 //
-// EIP712Error.swift
+// String.swift
 //
 // Created by Igor Shmakov on 09/04/2019
 //
 
 import Foundation
 
-enum EIP712Error: Error {
+extension String {
     
-    case notImplemented
-    case invalidMessage
-    case invalidParameter(name: String)
-    case invalidType(name: String)
+    var data: Data? {
+        return self.data(using: .utf8)
+    }
 }
