@@ -40,6 +40,6 @@ A Swift library for interacting with the 0x protocol smart contracts
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
-  s.dependency 'Web3Swift.io', '~> 0.0.2'
+  s.dependency 'Web3Swift.io', '~> 0.0.3'
 
 end

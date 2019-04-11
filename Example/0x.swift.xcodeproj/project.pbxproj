@@ -227,6 +227,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -316,8 +317,9 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-0x.swift_Tests/Pods-0x.swift_Tests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/0x.swift/Swifty0x.framework",
-				"${BUILT_PRODUCTS_DIR}/BigInt.swift/BigInt.framework",
+				"${BUILT_PRODUCTS_DIR}/BigInt/BigInt.framework",
 				"${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/SipHash/SipHash.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 				"${BUILT_PRODUCTS_DIR}/Web3Swift.io/Web3Swift.framework",
 				"${BUILT_PRODUCTS_DIR}/secp256k1_ios/secp256k1_ios.framework",
@@ -331,6 +333,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Swifty0x.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BigInt.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CryptoSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SipHash.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Web3Swift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/secp256k1_ios.framework",
@@ -352,8 +355,9 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-0x.swift_Example/Pods-0x.swift_Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/0x.swift/Swifty0x.framework",
-				"${BUILT_PRODUCTS_DIR}/BigInt.swift/BigInt.framework",
+				"${BUILT_PRODUCTS_DIR}/BigInt/BigInt.framework",
 				"${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/SipHash/SipHash.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 				"${BUILT_PRODUCTS_DIR}/Web3Swift.io/Web3Swift.framework",
 				"${BUILT_PRODUCTS_DIR}/secp256k1_ios/secp256k1_ios.framework",
@@ -365,6 +369,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Swifty0x.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BigInt.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CryptoSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SipHash.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Web3Swift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/secp256k1_ios.framework",
@@ -528,6 +533,7 @@
 			baseConfigurationReference = F13BD88CD49049C1EA4CD6A1 /* Pods-0x.swift_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = 0x.swift/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -544,6 +550,7 @@
 			baseConfigurationReference = BEB1B29587148406D451A450 /* Pods-0x.swift_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = 0x.swift/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -559,6 +566,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 86341ABFD183519F8F50F428 /* Pods-0x.swift_Tests.debug.xcconfig */;
 			buildSettings = {
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -581,6 +589,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 757D36C4F3E3885AC758EC52 /* Pods-0x.swift_Tests.release.xcconfig */;
 			buildSettings = {
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
