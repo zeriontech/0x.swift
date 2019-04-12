@@ -13,7 +13,15 @@ import Foundation
 enum EIP712Error: Error {
     
     case notImplemented
+    case invalidInput
     case invalidMessage
     case invalidParameter(name: String)
     case invalidType(name: String)
+    
+    case invalidTypedData
+    case invalidTypedDataPrimaryType
+    case invalidTypedDataDomain
+    case invalidTypedDataMessage
+    case invalidTypedDataType
+    case invalidTypedDataValue
 }

@@ -3,7 +3,7 @@
 // Copyright 2019 The 0x.swift Authors
 // Licensed under Apache License v2.0
 //
-// EIP712Struct.swift
+// EIP712Representable.swift
 //
 // Created by Igor Shmakov on 09/04/2019
 //
@@ -22,7 +22,7 @@ struct EIP712Parameter: EIP712Encodable {
     let type: String
     
     func encode() throws -> Data {
-        guard let data = "\(type) \(name)".data else {
+        guard let data = "\(type) \(name)".data() else {
             throw EIP712Error.invalidParameter(name: name)
         }
         return data
@@ -37,11 +37,11 @@ struct EIP712Type: EIP712Encodable {
     func encode() throws -> Data {
         let encodedParameters = try parameters
             .map { try $0.encode() }
-            .joined(separator: ",".data!)
-        guard let encodedType = name.data else {
+            .joined(separator: try ",".data())
+        guard let encodedType = name.data() else {
             throw EIP712Error.invalidType(name: name)
         }
-        return encodedType + "(".data! + encodedParameters + ")".data!
+        return try encodedType + "(".data() + encodedParameters + ")".data()
     }
 }
 
@@ -66,24 +66,20 @@ struct EIP712Value {
     let value: EIP712Encodable
 }
 
-protocol EIP712Struct: EIP712Encodable {
+protocol EIP712Representable: EIP712Encodable {
     
     func type() throws -> EIP712StructType
-    func values() throws -> [EIP712Encodable]
+    func message() throws -> EIP712Encodable
 }
 
-extension EIP712Struct {
-    
-    func encodeValues() throws -> Data {
-        return try values().reduce(Data()) { try $0 + $1.encode()}
-    }
+extension EIP712Representable {
     
     func typeHash() throws -> Data {
         return try type().encode().sha3(.keccak256)
     }
     
     func encode() throws -> Data {
-        return try (typeHash() + encodeValues()).sha3(.keccak256)
+        return try (typeHash() + message().encode()).sha3(.keccak256)
     }
     
     func hashStruct() throws -> Data {

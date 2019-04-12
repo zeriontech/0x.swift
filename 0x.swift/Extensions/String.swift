@@ -11,8 +11,23 @@
 import Foundation
 
 extension String {
+
+    func data() throws -> Data {
+        if let data = self.data(using: .utf8) {
+            return data
+        } else {
+            throw EIP712Error.invalidInput
+        }
+    }
     
-    var data: Data? {
+    func data() -> Data? {
         return self.data(using: .utf8)
+    }
+}
+
+extension String: EIP712Encodable {
+   
+    func encode() throws -> Data {
+        return try self.data()
     }
 }

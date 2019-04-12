@@ -10,31 +10,34 @@
 
 import Foundation
 
-struct EIP712Domain: EIP712Struct {
+struct EIP712Domain: EIP712Representable {
     
     let name: String
     let version: String
     let chainID: Int
-    let verifyingContractAddress: String
-    let salt: Data
+    let verifyingContract: String
+    let salt: Data?
     
     func type() throws -> EIP712StructType {
-        
-        // TODO: Use Mirror to dynamically generate EIP712StructType
-
-        let parameters = [
+ 
+        var parameters = [
             EIP712Parameter(name: "name", type: "string"),
             EIP712Parameter(name: "version", type: "string"),
             EIP712Parameter(name: "chainId", type: "uint256"),
-            EIP712Parameter(name: "verifyingContract", type: "address"),
-            EIP712Parameter(name: "salt", type: "bytes32"),
+            EIP712Parameter(name: "verifyingContract", type: "address")
         ]
+        
+        if salt != nil {
+            parameters += [
+                EIP712Parameter(name: "salt", type: "bytes32")
+            ]
+        }
         
         let type = EIP712Type(name: "EIP712Domain", parameters: parameters)
         return EIP712StructType(primary: type)
     }
     
-    func values() throws -> [EIP712Encodable] {
+    func message() throws -> EIP712Encodable {
         
         throw EIP712Error.notImplemented
     }
