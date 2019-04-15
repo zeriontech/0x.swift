@@ -11,15 +11,16 @@
 import Foundation
 import SwiftyJSON
 import Web3Swift
+import BigInt
 
 
 class EIP712TypedData {
     
     let domainType = "EIP712Domain"
     
-    var decodedType: EIP712StructType?
-    var decodedMessage: EIP712Encodable?
-    var decodedDomain: EIP712Domain?
+    var decodedType: EIP712StructType!
+    var decodedMessage: EIP712Encodable!
+    var decodedDomain: EIP712Domain!
     
     convenience init(jsonData: Data) throws {
         try self.init(json: try JSON(data: jsonData))
@@ -45,13 +46,17 @@ class EIP712TypedData {
             throw EIP712Error.invalidTypedData
         }
         
-        let domain = try parseDomain(encodedDomain: encodedDomain)
         let types = try parseTypes(encodedTypes: encodedTypes)
 
         guard let primaryType = types[primaryTypeName] else {
             throw EIP712Error.invalidTypedDataPrimaryType
         }
         
+        guard let domainType = types[domainType] else {
+            throw EIP712Error.invalidTypedDataDomain
+        }
+        
+        let domain = try parseDomain(encodedDomain: encodedDomain, type: domainType)
         let referencedTypes = types.values.filter { ![self.domainType, primaryTypeName].contains($0.name) }
         let structType = EIP712StructType(primary: primaryType, referenced: referencedTypes)
         let message = try parseMessage(encodedMessage: encodedMessage, primaryType: primaryType, types: types)
@@ -61,24 +66,41 @@ class EIP712TypedData {
         self.decodedDomain = domain
     }
     
-    func parseDomain(encodedDomain: JSON) throws -> EIP712Domain {
+    func validateParameter(json: JSON, parameter: EIP712Parameter) -> Bool {
         
-        guard
-            let name = encodedDomain["name"].string,
-            let version = encodedDomain["version"].string,
-            let chainId = encodedDomain["chainId"].int,
-            let verifyingContract = encodedDomain["verifyingContract"].string
-        else {
-            throw EIP712Error.invalidTypedDataDomain
+        let value = json[parameter.name]
+        
+        if parameter.type == "address" {
+            return value.string != nil
         }
         
-        let salt = encodedDomain["salt"].string?.data()
+        if parameter.type == "string" {
+            return value.string != nil
+        }
         
-        return EIP712Domain(name: name,
-                            version: version,
-                            chainID: chainId,
-                            verifyingContract: verifyingContract,
-                            salt: salt)
+        // TODO: handle uint8 to uint256, int8 to int256 (???)
+        if parameter.type.hasPrefix("int") || parameter.type.hasPrefix("uint") {
+            return value.int != nil
+        }
+        
+        if parameter.type.hasPrefix("bytes") && parameter.type != "bytes" {
+            return value.string != ""
+        }
+        
+        return false
+    }
+    
+    func parseDomain(encodedDomain: JSON, type: EIP712Type) throws -> EIP712Domain {
+        
+        guard type.parameters.reduce(true, { $0 && self.validateParameter(json: encodedDomain, parameter: $1) }) else {
+            throw EIP712Error.invalidTypedDataDomain
+        }
+
+        return EIP712Domain(name: encodedDomain["name"].string,
+                            version: encodedDomain["version"].string,
+                            chainID: encodedDomain["chainId"].int,
+                            verifyingContract: encodedDomain["verifyingContract"].string,
+                            salt: encodedDomain["salt"].string?.data())
     }
     
     func parseTypes(encodedTypes: [String: JSON]) throws -> [String: EIP712Type] {
@@ -121,39 +143,8 @@ class EIP712TypedData {
     
     func parseValue(parameter: EIP712Parameter, value: Any) throws -> EIP712Encodable {
         
-        if parameter.type == "address" {
-            guard let value = value as? String else {
-                throw EIP712Error.invalidTypedDataValue
-            }
-            return try value.data()
-        }
-        
-        if parameter.type == "string" {
-            guard let value = value as? String else {
-                throw EIP712Error.invalidTypedDataValue
-            }
-            return try value.data()
-        }
-        
-        // TODO: handle uint8 to uint256, int8 to int256 (???)
-        if parameter.type.hasPrefix("int") || parameter.type.hasPrefix("uint") {
-            guard let value = value as? Int else {
-                throw EIP712Error.invalidTypedDataValue
-            }
-            return value.data
-        }
-        
-        if parameter.type.hasPrefix("bytes") && parameter.type != "bytes" {
-            if let value = value as? String {
-                return Data(hex: value)
-            } else if let value = value as? Data {
-                return value
-            } else {
-                throw EIP712Error.invalidTypedDataValue
-            }
-        }
-        
-        throw EIP712Error.invalidTypedDataValue
+        let encoder = EIP712ParameterEncoder(parameter: parameter, value: value)
+        return try encoder.encode()
     }
 }
 

@@ -15,4 +15,20 @@ extension Data: EIP712Encodable {
     func encode() throws -> Data {
         return self
     }
+    
+    func leftPadded(size: Int) -> Data {
+        if size <= count {
+            return self
+        } else {
+            return Data(repeating: UInt8(0), count: size-count) + self
+        }
+    }
+    
+    func rightPadded(size: Int) -> Data {
+        if size <= count {
+            return self
+        } else {
+            return self + Data(repeating: UInt8(0), count: size-count)
+        }
+    }
 }
