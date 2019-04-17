@@ -10,19 +10,19 @@
 
 import Web3Swift
 
-class SimpleERC20Token: ERC20 {
+public class ERC20Token: ERC20 {
     
-    let encoder: SimpleERC20Encoder
-    let decoder: SimpleERC20Decoder
+    let encoder: ERC20Encoder
+    let decoder: ERC20Decoder
     let interactor: ContractInteractor
     
-    public init(
+    init(
         contract: EthAddress,
         network: Network,
-        encoder: SimpleERC20Encoder,
-        decoder: SimpleERC20Decoder
+        encoder: ERC20Encoder,
+        decoder: ERC20Decoder
     ) {
-        self.interactor = ContractInteractor(
+        self.interactor = Web3ContractInteractor(
             contract: contract,
             network: network
         )
@@ -30,13 +30,13 @@ class SimpleERC20Token: ERC20 {
         self.decoder = decoder
     }
     
-    public convenience init(contract: EthAddress, network: Network)
+    convenience init(contract: EthAddress, network: Network)
     {
         self.init(
             contract: contract,
             network: network,
-            encoder: SimpleERC20Encoder(),
-            decoder: SimpleERC20Decoder()
+            encoder: ERC20Encoder(),
+            decoder: ERC20Decoder()
         )
     }
     
@@ -67,39 +67,42 @@ class SimpleERC20Token: ERC20 {
         )
     }
     
-    func transfer(to: EthAddress, value: EthNumber, sender: EthPrivateKey) throws -> BytesScalar {
+    func transfer(to: EthAddress, value: EthNumber, sender: EthPrivateKey) throws -> TransactionHash {
         return try interactor.send(
-            sender: sender,
             function: encoder.transfer(
                 to: to,
                 value: value
-            )
+            ),
+            value: EthNumber(hex: "0x00"),
+            sender: sender
         )
     }
     
-    func transferFrom(from: EthAddress, to: EthAddress, value: EthNumber, sender: EthPrivateKey) throws -> BytesScalar {
+    func transferFrom(from: EthAddress, to: EthAddress, value: EthNumber, sender: EthPrivateKey) throws -> TransactionHash {
         return try interactor.send(
-            sender: sender,
             function: encoder.transferFrom(
                 from: from,
                 to: to,
                 value: value
-            )
+            ),
+            value: EthNumber(hex: "0x00"),
+            sender: sender
         )
     }
     
-    func approve(spender: EthAddress, value: EthNumber, sender: EthPrivateKey) throws -> BytesScalar {
+    func approve(spender: EthAddress, value: EthNumber, sender: EthPrivateKey) throws -> TransactionHash {
         return try interactor.send(
-            sender: sender,
             function: encoder.approve(
                 spender: spender,
                 value: value
-            )
+            ),
+            value: EthNumber(hex: "0x00"),
+            sender: sender
         )
     }
 }
 
-extension SimpleERC20Token: ERC20Detailed {
+extension ERC20Token: ERC20Detailed {
     
     func name() throws -> String? {
         let name = try decoder.decodeString(

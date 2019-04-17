@@ -10,7 +10,7 @@
 
 import Web3Swift
 
-class SimpleERC20Decoder: ABIDecoder {
+class ERC20Decoder: ABIDecoder {
     
 }
 
@@ -26,7 +26,10 @@ class ABIDecoder {
     }
     
     func decodeString(message: ABIMessage) throws -> String {
-        return try DecodedABIString(abiMessage: message, index: 0).value()
+        return try DecodedABIString(
+            abiMessage: message,
+            index: 0
+        ).value()
     }
     
 }

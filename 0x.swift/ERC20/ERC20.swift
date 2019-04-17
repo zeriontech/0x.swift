@@ -21,10 +21,10 @@ protocol ERC20 {
     
     // Executions
     //TODO: Refactor TransactionHash
-    func transfer(to: EthAddress, value: EthNumber, sender: EthPrivateKey) throws -> BytesScalar
+    func transfer(to: EthAddress, value: EthNumber, sender: EthPrivateKey) throws -> TransactionHash
     
-    func transferFrom(from: EthAddress, to: EthAddress, value: EthNumber, sender: EthPrivateKey) throws -> BytesScalar
+    func transferFrom(from: EthAddress, to: EthAddress, value: EthNumber, sender: EthPrivateKey) throws -> TransactionHash
     
-    func approve(spender: EthAddress, value: EthNumber, sender: EthPrivateKey) throws -> BytesScalar
+    func approve(spender: EthAddress, value: EthNumber, sender: EthPrivateKey) throws -> TransactionHash
 
 }

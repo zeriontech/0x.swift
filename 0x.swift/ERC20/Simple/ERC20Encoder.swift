@@ -10,7 +10,7 @@
 
 import Web3Swift
 
-class SimpleERC20Encoder: SimpleABIEncoder {
+class ERC20Encoder: ABIEncoder {
     
     func totalSupply() -> EncodedABIFunction {
         return encodeStaticFunction(
@@ -90,7 +90,7 @@ class SimpleERC20Encoder: SimpleABIEncoder {
     
 }
 
-extension SimpleERC20Encoder {
+extension ERC20Encoder {
     
     func name() -> EncodedABIFunction {
         return encodeStaticFunction(function: "name()")
@@ -106,7 +106,7 @@ extension SimpleERC20Encoder {
     
 }
 
-class SimpleABIEncoder: ABIEncoder {
+class ABIEncoder {
     
     func encodeStaticFunction(function: String) -> EncodedABIFunction {
         return encode(function: function, parameters: [])
@@ -118,14 +118,5 @@ class SimpleABIEncoder: ABIEncoder {
             parameters: parameters
         )
     }
-    
-}
-
-protocol ABIEncoder {
-    
-    func encode(
-        function: String,
-        parameters: [ABIEncodedParameter]
-    ) -> EncodedABIFunction
     
 }
