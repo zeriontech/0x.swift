@@ -23,6 +23,6 @@ enum EIP712Error: Error {
     case invalidTypedDataDomain
     case invalidTypedDataMessage
     case invalidTypedDataType
-    case invalidTypedDataValue(name: String)
+    case invalidTypedDataValue
     case integerOverflow
 }

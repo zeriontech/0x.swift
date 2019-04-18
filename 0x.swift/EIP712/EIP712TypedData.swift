@@ -18,9 +18,9 @@ class EIP712TypedData {
     
     let domainType = "EIP712Domain"
     
-    var decodedType: EIP712StructType!
-    var decodedMessage: EIP712Encodable!
-    var decodedDomain: EIP712Domain!
+    var type: EIP712StructType!
+    var domain: EIP712Domain!
+    var encodedData: Data!
     
     convenience init(jsonData: Data) throws {
         try self.init(json: try JSON(data: jsonData))
@@ -36,17 +36,17 @@ class EIP712TypedData {
     
     init(json: JSON) throws {
 
-        let encodedDomain = json["domain"]
-        let encodedMessage = json["message"]
+        let jsonDomain = json["domain"]
+        let jsonMessage = json["message"]
         
         guard
-            let encodedTypes = json["types"].dictionary,
+            let jsonTypes = json["types"].dictionary,
             let primaryTypeName = json["primaryType"].string
         else {
             throw EIP712Error.invalidTypedData
         }
         
-        let types = try parseTypes(encodedTypes: encodedTypes)
+        let types = try parseTypes(jsonTypes: jsonTypes)
 
         guard let primaryType = types[primaryTypeName] else {
             throw EIP712Error.invalidTypedDataPrimaryType
@@ -56,67 +56,39 @@ class EIP712TypedData {
             throw EIP712Error.invalidTypedDataDomain
         }
         
-        let domain = try parseDomain(encodedDomain: encodedDomain, type: domainType)
-        let referencedTypes = types.values.filter { ![self.domainType, primaryTypeName].contains($0.name) }
-        let structType = EIP712StructType(primary: primaryType, referenced: referencedTypes)
-        let message = try parseMessage(encodedMessage: encodedMessage, primaryType: primaryType, types: types)
+        let dependencies = try findTypeDependencies(primaryType: primaryType, types: types).filter { $0.name != primaryType.name }
+        let type = EIP712StructType(primary: primaryType, referenced: dependencies)
+        let domain = try parseDomain(jsonDomain: jsonDomain, type: domainType)
+        let data = try encodeData(data: jsonMessage, primaryType: primaryType, types: types)
         
-        self.decodedType = structType
-        self.decodedMessage = message
-        self.decodedDomain = domain
+        self.type = type
+        self.encodedData = data
+        self.domain = domain
     }
-    
-    func validateParameter(json: JSON, parameter: EIP712Parameter) -> Bool {
-        
-        let value = json[parameter.name]
-        
-        if parameter.type == "address" {
-            return value.string != nil
-        }
-        
-        if parameter.type == "string" {
-            return value.string != nil
-        }
-        
-        // TODO: handle uint8 to uint256, int8 to int256 (???)
-        if parameter.type.hasPrefix("int") || parameter.type.hasPrefix("uint") {
-            return value.int != nil
-        }
-        
-        if parameter.type.hasPrefix("bytes") && parameter.type != "bytes" {
-            return value.string != ""
-        }
-        
-        return false
-    }
-    
-    func parseDomain(encodedDomain: JSON, type: EIP712Type) throws -> EIP712Domain {
-        
-        guard type.parameters.reduce(true, { $0 && self.validateParameter(json: encodedDomain, parameter: $1) }) else {
-            throw EIP712Error.invalidTypedDataDomain
-        }
 
-        return EIP712Domain(name: encodedDomain["name"].string,
-                            version: encodedDomain["version"].string,
-                            chainID: encodedDomain["chainId"].int,
-                            verifyingContract: encodedDomain["verifyingContract"].string,
-                            salt: encodedDomain["salt"].string?.data())
+    func parseDomain(jsonDomain: JSON, type: EIP712Type) throws -> EIP712Domain {
+        
+        return EIP712Domain(name: jsonDomain["name"].string,
+                            version: jsonDomain["version"].string,
+                            chainID: jsonDomain["chainId"].int,
+                            verifyingContract: jsonDomain["verifyingContract"].string,
+                            salt: jsonDomain["salt"].string?.data())
     }
     
-    func parseTypes(encodedTypes: [String: JSON]) throws -> [String: EIP712Type] {
+    func parseTypes(jsonTypes: [String: JSON]) throws -> [String: EIP712Type] {
     
         var types = [String: EIP712Type]()
         
-        for (name, encodedParameters) in encodedTypes {
+        for (name, jsonParameters) in jsonTypes {
             var parameters = [EIP712Parameter]()
-            for (_, encodedParameter) in encodedParameters {
+            for (_, jsonParameter) in jsonParameters {
                 guard
-                    let name = encodedParameter["name"].string,
-                    let type = encodedParameter["type"].string
+                    let name = jsonParameter["name"].string,
+                    let type = jsonParameter["type"].string
                 else {
                     throw EIP712Error.invalidTypedDataType
                 }
-                parameters.append(EIP712Parameter(name: name, type: type))
+                parameters.append(EIP712Parameter(name: name, type: try EIP712ParameterType.parse(type: type)))
             }
             let type = EIP712Type(name: name, parameters: parameters)
             types[name] = type
@@ -125,46 +97,65 @@ class EIP712TypedData {
         return types
     }
     
-    func parseMessage(encodedMessage: JSON, primaryType: EIP712Type, types: [String: EIP712Type]) throws -> EIP712Encodable {
+    func findTypeDependencies(primaryType: EIP712Type, types: [String: EIP712Type], results: [EIP712Type] = []) throws -> [EIP712Type] {
         
-        var values = [EIP712Encodable]()
+        var results = results
+        if (results.contains(where: { $0.name == primaryType.name} ) || types[primaryType.name] == nil) {
+            return results
+        }
+
+        results.append(primaryType)
         
-        for paramenter in primaryType.parameters {
-            let value = encodedMessage[paramenter.name]
-            if let type = types[paramenter.type] {
-                values.append(try self.parseMessage(encodedMessage: value, primaryType: type, types: types))
+        for parameter in primaryType.parameters {
+            if let type = types[parameter.type.raw()] {
+                let dependencies = try findTypeDependencies(primaryType: type, types: types, results: results)
+                results += dependencies.filter { dep in !results.contains(where: { res in res.name == dep.name }) }
+            }
+        }
+        return results
+    }
+    
+    func encodeType(primaryType: EIP712Type, types: [String: EIP712Type]) throws -> EIP712StructType {
+        
+        let dependencies = try findTypeDependencies(primaryType: primaryType, types: types).filter { $0.name != primaryType.name }
+        return EIP712StructType(primary: primaryType, referenced: dependencies)
+    }
+    
+    func hashType(primaryType: EIP712Type, types: [String: EIP712Type]) throws -> Data {
+        
+        let type = try encodeType(primaryType: primaryType, types: types)
+        return try type.hashType()
+    }
+    
+    func encodeData(data: JSON, primaryType: EIP712Type, types: [String: EIP712Type]) throws -> Data {
+        
+        var encodedTypes: [EIP712ParameterType] = [.fixedBytes(len: 32)]
+        var encodedValues: [Any] = [try self.hashType(primaryType: primaryType, types: types)]
+        
+        for parameter in primaryType.parameters {
+            let value = data[parameter.name]
+            if let type = types[parameter.type.raw()] {
+                encodedTypes.append(.fixedBytes(len: 32))
+                let data = try encodeData(data: value, primaryType: type, types: types)
+                encodedValues.append(data.sha3(.keccak256))
             } else {
-                values.append(try self.parseValue(parameter: paramenter, value: value.object))
+                encodedTypes.append(parameter.type)
+                encodedValues.append(value.object)
             }
         }
         
-        return try values.reduce(Data()) { try $0 + $1.encode() }
-    }
-    
-    func parseValue(parameter: EIP712Parameter, value: Any) throws -> EIP712Encodable {
+        let parameters = try zip(encodedTypes, encodedValues).map {
+            try EIP712ValueEncoder(type: $0.0, value: $0.1).makeABIEncodedParameter()
+        }
         
-        let encoder = EIP712ParameterEncoder(parameter: parameter, value: value)
-        return try encoder.encode()
+        return try EncodedABITuple(parameters: parameters).value()
     }
 }
 
-extension EIP712TypedData: EIP712Representable {
+extension EIP712TypedData: EIP712Hashable {
     
-    func type() throws -> EIP712StructType {
+    func hash() throws -> Data {
         
-        if let type = self.decodedType {
-            return type
-        } else {
-            throw EIP712Error.invalidTypedData
-        }
-    }
-    
-    func message() throws -> EIP712Encodable {
-       
-        if let message = self.decodedMessage {
-            return message
-        } else {
-            throw EIP712Error.invalidTypedData
-        }
+        return encodedData.sha3(.keccak256)
     }
 }

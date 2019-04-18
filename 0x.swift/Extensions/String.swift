@@ -23,15 +23,4 @@ extension String {
     func data() -> Data? {
         return self.data(using: .utf8)
     }
-
-    func isValidEthereumAddress() -> Bool {
-        return self.range(of: "^0x[a-fA-F0-9]{40}$", options: .regularExpression) != nil
-    }
-}
-
-extension String: EIP712Encodable {
-   
-    func encode() throws -> Data {
-        return try self.data()
-    }
 }

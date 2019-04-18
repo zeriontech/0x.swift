@@ -24,50 +24,39 @@ struct EIP712Domain: EIP712Representable {
         
         if let name = name {
             data.append(EIP712SimpleValue(
-                parameter: EIP712Parameter(name: "name", type: "string"),
+                parameter: EIP712Parameter(name: "name", type: .string),
                 value: name)
             )
         }
         
         if let version = version {
             data.append(EIP712SimpleValue(
-                parameter: EIP712Parameter(name: "version", type: "string"),
+                parameter: EIP712Parameter(name: "version", type: .string),
                 value: version)
             )
         }
         
         if let chainID = chainID {
             data.append(EIP712SimpleValue(
-                parameter: EIP712Parameter(name: "chainId", type: "uint256"),
+                parameter: EIP712Parameter(name: "chainId", type: .uint(len: 256)),
                 value: chainID)
             )
         }
         
         if let verifyingContract = verifyingContract {
             data.append(EIP712SimpleValue(
-                parameter: EIP712Parameter(name: "verifyingContract", type: "address"),
+                parameter: EIP712Parameter(name: "verifyingContract", type: .address),
                 value: verifyingContract)
             )
         }
         
         if let salt = salt {
             data.append(EIP712SimpleValue(
-                parameter: EIP712Parameter(name: "salt", type: "bytes32"),
+                parameter: EIP712Parameter(name: "salt", type: .fixedBytes(len: 32)),
                 value: salt)
             )
         }
         
         return data
-    }
-    
-    func type() throws -> EIP712StructType {
- 
-        let type = EIP712Type(name: "EIP712Domain", parameters: values.map { $0.parameter })
-        return EIP712StructType(primary: type)
-    }
-    
-    func message() throws -> EIP712Encodable {
-        
-        return try values.reduce(Data()) { try $0 + $1.encode() }
     }
 }

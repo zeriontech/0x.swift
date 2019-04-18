@@ -3,14 +3,14 @@
 // Copyright 2019 The 0x.swift Authors
 // Licensed under Apache License v2.0
 //
-// EIP712Encodable.swift
+// EIP712Hashable.swift
 //
-// Created by Igor Shmakov on 15/04/2019
+// Created by Igor Shmakov on 17/04/2019
 //
 
 import Foundation
 
-protocol EIP712Encodable {
+protocol EIP712Hashable {
     
-    func encode() throws -> Data
+    func hash() throws -> Data
 }

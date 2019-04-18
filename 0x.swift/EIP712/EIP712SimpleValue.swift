@@ -9,15 +9,16 @@
 //
 
 import Foundation
+import Web3Swift
 
 struct EIP712SimpleValue: EIP712Value {
     
     let parameter: EIP712Parameter
     let value: Any
     
-    func encode() throws -> Data {
+    func makeABIEncodedParameter() throws -> ABIEncodedParameter {
         
-        let encoder = EIP712ParameterEncoder(parameter: parameter, value: value)
-        return try encoder.encode()
+        let encoder = EIP712ValueEncoder(type: parameter.type, value: value)
+        return try encoder.makeABIEncodedParameter()
     }
 }

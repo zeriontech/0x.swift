@@ -10,7 +10,7 @@
 
 import Foundation
 
-struct EIP712StructType: EIP712Encodable {
+struct EIP712StructType {
     
     let types: [EIP712Type]
     var primaryType: EIP712Type? {
@@ -21,7 +21,11 @@ struct EIP712StructType: EIP712Encodable {
         types = [primary] + referenced.sorted { $0.name < $1.name }
     }
     
-    func encode() throws -> Data {
-        return try types.reduce(Data()) { try $0 + $1.encode()}
+    func encode() -> String {
+        return types.reduce("") { $0 + $1.encode()}
+    }
+    
+    func hashType() throws -> Data {
+        return try encode().data().sha3(.keccak256)
     }
 }

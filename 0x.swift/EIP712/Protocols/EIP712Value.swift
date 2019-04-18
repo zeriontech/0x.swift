@@ -9,8 +9,12 @@
 //
 
 import Foundation
+import Web3Swift
 
-protocol EIP712Value: EIP712Encodable {
+protocol EIP712Value {
     
     var parameter: EIP712Parameter { get }
+    var value: Any { get }
+    
+    func makeABIEncodedParameter() throws -> ABIEncodedParameter
 }

@@ -6,21 +6,88 @@ import Quick
 
 class TypedDataHashingTests: XCTestCase {
     
-    let simpleSignTypedDataHashHex = "0xb460d69ca60383293877cd765c0f97bd832d66bca720f7e32222ce1118832493"
-    let simpleSignTypedData = #"{"types":{"EIP712Domain":[{"name":"name","type":"string"}],"Test":[{"name":"testAddress","type":"address"},{"name":"testNumber","type":"uint256"}]},"domain":{"name":"Test"},"message":{"testAddress":"0x0000000000000000000000000000000000000000","testNumber":"12345"},"primaryType":"Test"}"#
+    let simpleSignTypedData = try! String(contentsOfFile: Bundle.main.path(forResource: "simple", ofType: "json")!)
+    let orderSignTypedData = try! String(contentsOfFile: Bundle.main.path(forResource: "order", ofType: "json")!)
+    let mailSignTypedData = try! String(contentsOfFile: Bundle.main.path(forResource: "mail", ofType: "json")!)
     
-    let orderSignTypedDataHashHex = "0x55eaa6ec02f3224d30873577e9ddd069a288c16d6fb407210eecbc501fa76692"
-    let orderSignTypedData = #"{"types":{"EIP712Domain":[{"name":"name","type":"string"},{"name":"version","type":"string"},{"name":"verifyingContract","type":"address"}],"Order":[{"name":"makerAddress","type":"address"},{"name":"takerAddress","type":"address"},{"name":"feeRecipientAddress","type":"address"},{"name":"senderAddress","type":"address"},{"name":"makerAssetAmount","type":"uint256"},{"name":"takerAssetAmount","type":"uint256"},{"name":"makerFee","type":"uint256"},{"name":"takerFee","type":"uint256"},{"name":"expirationTimeSeconds","type":"uint256"},{"name":"salt","type":"uint256"},{"name":"makerAssetData","type":"bytes"},{"name":"takerAssetData","type":"bytes"}]},"domain":{"name":"0x Protocol","version":"2","verifyingContract":"0x0000000000000000000000000000000000000000"},"message":{"makerAddress":"0x0000000000000000000000000000000000000000","takerAddress":"0x0000000000000000000000000000000000000000","makerAssetAmount":"1000000000000000000","takerAssetAmount":"1000000000000000000","expirationTimeSeconds":"12345","makerFee":"0","takerFee":"0","feeRecipientAddress":"0x0000000000000000000000000000000000000000","senderAddress":"0x0000000000000000000000000000000000000000","salt":"12345","makerAssetData":"0x0000000000000000000000000000000000000000","takerAssetData":"0x0000000000000000000000000000000000000000","exchangeAddress":"0x0000000000000000000000000000000000000000"},"primaryType":"Order"}"#
+    func testMailTypeEncoding() {
+        
+        expect{
+            let data = try EIP712TypedData(jsonString: self.mailSignTypedData)
+            return data.type.encode()
+        }.to(
+            equal("Mail(Person from,Person to,string contents)Person(string name,address wallet)"),
+            description: "Make sure type encoding is correct"
+        )
+    }
+    
+    func testMailTypeHashing() {
+        
+        expect{
+            let data = try EIP712TypedData(jsonString: self.mailSignTypedData)
+            return try data.type.hashType().toHexString()
+        }.to(
+            equal("a0cedeb2dc280ba39b857546d74f5549c3a1d7bdc2dd96bf881f76108e23dac2"),
+            description: "Make sure type hashing is correct"
+        )
+    }
+    
+    func testMailDomainHashing() {
+
+        expect{
+            let data = try EIP712TypedData(jsonString: self.mailSignTypedData)
+            return try data.domain.hash().toHexString()
+        }.to(
+            equal("f2cee375fa42b42143804025fc449deafd50cc031ca257e0b194a650a912090f"),
+            description: "Make sure domain hashing is correct"
+        )
+    }
+    
+    func testMailDataEncoding() {
+        
+        let data = "a0cedeb2dc280ba39b857546d74f5549c3a1d7bdc2dd96bf881f76108e23dac2fc71e5fa27ff56c350aa531bc129ebdf613b772b6604664f5d8dbe21b85eb0c8cd54f074a4af31b4411ff6a60c9719dbd559c221c8ac3492d9d872b041d703d1b5aadf3154a261abdd9086fc627b61efca26ae5702701d05cd2305f7c52a2fc8"
+        
+        expect{
+            let data = try EIP712TypedData(jsonString: self.mailSignTypedData)
+            return data.encodedData.toHexString()
+        }.to(
+            equal(data),
+            description: "Make sure data encoding is correct"
+        )
+    }
+    
+    func testMailStructHashing() {
+        
+        expect{
+            let data = try EIP712TypedData(jsonString: self.mailSignTypedData)
+            return try data.hash().toHexString()
+        }.to(
+            equal("c52c0ee5d84264471806290a3f2c4cecfc5490626bf912d01f240d7a274b371e"),
+            description: "Make sure typed data hashing is correct"
+        )
+    }
+    
+    func testMailHashing() {
+        
+        expect{
+            let data = try EIP712TypedData(jsonString: self.mailSignTypedData)
+            let hash = EIP712Hash(domain: data.domain, typedData: data)
+            return try hash.hash().toHexString()
+        }.to(
+            equal("be609aee343fb3c4b28e1df9e632fca64fcfaede20f02e86244efddf30957bd2"),
+            description: "Make sure typed data hashing is correct"
+        )
+    }
     
     func testSimpleHashing() {
 
         expect{
             let data = try EIP712TypedData(jsonString: self.simpleSignTypedData)
-            let hash = EIP712Hash(typedData: data)
-            return try hash.value().toHexString()
+            let hash = EIP712Hash(domain: data.domain, typedData: data)
+            return try hash.hash().toHexString()
         }.to(
-            equal(self.simpleSignTypedDataHashHex),
-            description: "Make sure typed data JSON hashing is correct"
+            equal("b460d69ca60383293877cd765c0f97bd832d66bca720f7e32222ce1118832493"),
+            description: "Make sure typed data hashing is correct"
         )
     }
     
@@ -28,11 +95,11 @@ class TypedDataHashingTests: XCTestCase {
         
         expect{
             let data = try EIP712TypedData(jsonString: self.orderSignTypedData)
-            let hash = EIP712Hash(typedData: data)
-            return try hash.value().toHexString()
+            let hash = EIP712Hash(domain: data.domain, typedData: data)
+            return try hash.hash().toHexString()
         }.to(
-            equal(self.orderSignTypedDataHashHex),
-            description: "Make sure typed data JSON hashing is correct"
+            equal("55eaa6ec02f3224d30873577e9ddd069a288c16d6fb407210eecbc501fa76692"),
+            description: "Make sure typed data hashing is correct"
         )
     }
 }

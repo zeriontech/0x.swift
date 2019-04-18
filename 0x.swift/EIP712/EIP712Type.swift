@@ -10,18 +10,13 @@
 
 import Foundation
 
-struct EIP712Type: EIP712Encodable {
+struct EIP712Type {
     
     let name: String
     let parameters: [EIP712Parameter]
     
-    func encode() throws -> Data {
-        let encodedParameters = try parameters
-            .map { try $0.encode() }
-            .joined(separator: try ",".data())
-        guard let encodedType = name.data() else {
-            throw EIP712Error.invalidType(name: name)
-        }
-        return try encodedType + "(".data() + encodedParameters + ")".data()
+    func encode() -> String {
+        let encodedParameters = parameters.map { $0.encode() }.joined(separator: ",")
+        return "\(name)(\(encodedParameters))"
     }
 }

@@ -10,31 +10,24 @@
 
 import Foundation
 
-class EIP712Hash {
+class EIP712Hash: EIP712Hashable {
     
-    let typedData: EIP712Representable
-    let domain: EIP712Domain
+    let typedData: EIP712Hashable
+    let domain: EIP712Hashable
     
-    init(domain: EIP712Domain, typedData: EIP712Representable) {
+    init(domain: EIP712Hashable, typedData: EIP712Hashable) {
         
         self.domain = domain
         self.typedData = typedData
     }
-    
-    init(typedData: EIP712TypedData) {
-        
-        self.domain = typedData.decodedDomain
-        self.typedData = typedData
-    }
 
-    func value() throws -> Data {
+    func hash() throws -> Data {
         guard
-            let prefixData = "\u{19}u{01}".data(),
-            let domainData = try? domain.hashStruct(),
-            let structData = try? typedData.hashStruct()
+            let domainData = try? domain.hash(),
+            let structData = try? typedData.hash()
         else {
             throw EIP712Error.invalidMessage
         }
-        return (prefixData + domainData + structData).sha3(.keccak256)
+        return (Data(hex: "0x1901") + domainData + structData).sha3(.keccak256)
     }
 }
