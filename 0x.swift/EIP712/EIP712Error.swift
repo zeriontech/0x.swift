@@ -25,4 +25,6 @@ enum EIP712Error: Error {
     case invalidTypedDataType
     case invalidTypedDataValue
     case integerOverflow
+    
+    case signatureVerificationError
 }
