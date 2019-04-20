@@ -70,10 +70,14 @@ class EIP712SignatureVerifier {
     
     func verify(data: EIP712Hashable, signature: Data, address: EthAddress) throws -> Bool {
         
-        var convertedSignature = convertSignature(signature: signature)!
+        guard var convertedSignature = convertSignature(signature: signature) else {
+            throw EIP712Error.signatureVerificationError
+        }
+        
         guard var recoveredPublicKey = publicKey(signature: &convertedSignature, hash: try data.hash()) else {
             throw EIP712Error.signatureVerificationError
         }
+        
         let publicKey = convertPublicKey(publicKey: &recoveredPublicKey, compressed: false)
         return try publicKeyToEthAddress(publicKey: publicKey) == address.value()
     }
