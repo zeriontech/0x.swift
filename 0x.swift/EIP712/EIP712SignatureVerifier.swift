@@ -18,11 +18,19 @@ class EIP712SignatureVerifier {
     private let context: OpaquePointer
     
     public init() {
-        context = secp256k1_context_create(UInt32(SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY))!
+        context = secp256k1_context_create(UInt32(SECP256K1_CONTEXT_VERIFY))!
     }
     
     deinit {
         secp256k1_context_destroy(context)
+    }
+    
+    func publicKey(privateKey: Data) -> secp256k1_pubkey? {
+        
+        let privateKey = privateKey.bytes
+        var outPubKey = secp256k1_pubkey()
+        let status = secp256k1_ec_pubkey_create(context, &outPubKey, privateKey)
+        return status == 1 ? outPubKey : nil
     }
     
     func publicKey(signature: inout secp256k1_ecdsa_recoverable_signature, hash: Data) -> secp256k1_pubkey? {
@@ -41,25 +49,32 @@ class EIP712SignatureVerifier {
         output.withUnsafeMutableBytes { (pointer: UnsafeMutablePointer<UInt8>) -> Void in
             secp256k1_ec_pubkey_serialize(context, pointer, &outputLen, &publicKey, compressedFlags)
         }
-        return output.sha3(.keccak256).suffix(20)
+        return output
     }
     
-    public func convertSignature(signature: Data) -> secp256k1_ecdsa_recoverable_signature {
+    func convertSignature(signature: Data) -> secp256k1_ecdsa_recoverable_signature? {
         
         var sig = secp256k1_ecdsa_recoverable_signature()
         let recid = Int32(signature[64]) - 27
-        signature.withUnsafeBytes { (input: UnsafePointer<UInt8>) -> Void in
-            secp256k1_ecdsa_recoverable_signature_parse_compact(context, &sig, input, recid)
+        let result = signature.withUnsafeBytes { (input: UnsafePointer<UInt8>) -> Int32 in
+            return secp256k1_ecdsa_recoverable_signature_parse_compact(context, &sig, input, recid)
         }
-        return sig
+        return result == 1 ? sig : nil
+    }
+    
+    func publicKeyToEthAddress(publicKey: Data) -> Data {
+        
+        // Drop constant prefix 0x04
+        return publicKey.dropFirst().sha3(.keccak256).suffix(20)
     }
     
     func verify(data: EIP712Hashable, signature: Data, address: EthAddress) throws -> Bool {
         
-        var convertedSignature = convertSignature(signature: signature)
+        var convertedSignature = convertSignature(signature: signature)!
         guard var recoveredPublicKey = publicKey(signature: &convertedSignature, hash: try data.hash()) else {
             throw EIP712Error.signatureVerificationError
         }
-        return try convertPublicKey(publicKey: &recoveredPublicKey, compressed: false) == address.value()
+        let publicKey = convertPublicKey(publicKey: &recoveredPublicKey, compressed: false)
+        return try publicKeyToEthAddress(publicKey: publicKey) == address.value()
     }
 }

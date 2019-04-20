@@ -26,7 +26,7 @@ extension EIP712Signable {
             bytes: [
                 try signature.r(),
                 try signature.s(),
-                IntegerBytes(value: try signature.recoverID().value() + 27)]
+                SimpleBytes(bytes: [UInt8(try signature.recoverID().value() + 27)])]
         )
         
         return try message.value()

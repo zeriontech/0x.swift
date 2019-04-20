@@ -23,12 +23,9 @@ class EIP712Signer: EIP712Signable {
     
     func sign(hash: EIP712Hashable) throws -> SECP256k1Signature {
         
-        let hashFunction = SHA3(variant: .keccak256).calculate
-        
         let signature = SECP256k1Signature(
-            privateKey: privateKey,
-            message: SimpleBytes(bytes: try hash.hash()),
-            hashFunction: hashFunction
+            digest: SimpleBytes(bytes: try hash.hash()),
+            privateKey: privateKey
         )
         
         return signature

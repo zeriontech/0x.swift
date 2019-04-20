@@ -109,7 +109,7 @@ class TypedDataHashingTests: XCTestCase {
         )
     }
     
-    func testMailFullSigning() {
+    func testMailSigningAndVerification() {
         
         expect{
             let data = try EIP712TypedData(jsonString: self.mailSignTypedData)
@@ -122,7 +122,7 @@ class TypedDataHashingTests: XCTestCase {
             return try verifier.verify(data: hash, signature: signature, address: address)
         }.to(
             equal(true),
-            description: "Make sure data signing is correct"
+            description: "Make sure data signing and verification is correct"
         )
     }
     
