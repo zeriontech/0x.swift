@@ -20,7 +20,7 @@ class ERC20Encoder: ABIEncoder {
     
     func balanceOf(owner: EthAddress) -> EncodedABIFunction {
         return encode(
-            function: "balanceOf()",
+            function: "balanceOf(address)",
             parameters: [
                 ABIAddress(
                     address: owner

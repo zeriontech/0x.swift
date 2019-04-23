@@ -19,7 +19,7 @@ class ERC20Tests: XCTestCase {
         case invalidNumber
     }
 
-    
+    // ZRX Token
     let token = ERC20Token(
         contract: EthAddress(
             hex: "0xe41d2489571d322189246dafa5ebde1f4699f498"
@@ -28,6 +28,10 @@ class ERC20Tests: XCTestCase {
             chain: "mainnet",
             apiKey: "ETi2ntZoWxd6nTI1qE13Q4I1eLB8AMDl"
         )
+    )
+    
+    let address = EthAddress(
+        hex: "0x606af0bd4501855914b50e2672c5926b896737ef"
     )
     
     func testName() {
@@ -41,9 +45,16 @@ class ERC20Tests: XCTestCase {
     
     func testDecimals() {
         expect{
-            try self.token.decimals().value().toHexString()
+            guard let number = try Decimal(
+                string: HexAsDecimalString(
+                    hex: self.token.decimals()
+                ).value()
+            ) else {
+                throw ERC20TestsErrors.invalidNumber
+            }
+            return number
         }.to(
-            equal("12"),
+            equal(Decimal(18)),
             description: "Token should have correct decimals"
         )
     }
@@ -62,9 +73,7 @@ class ERC20Tests: XCTestCase {
             guard let number = try Decimal(
                 string: HexAsDecimalString(
                     hex: self.token.balanceOf(
-                        owner: EthAddress(
-                            hex: "0x505e20c0Fb8252Ca7aC21d54D5432eccD4f2D076"
-                        )
+                        owner: self.address
                     )
                 ).value()
             ) else {
@@ -72,7 +81,27 @@ class ERC20Tests: XCTestCase {
             }
             return number
         }.to(
-            beGreaterThan(Decimal(0))
+            beGreaterThan(Decimal(0)),
+            description: "Token balance should be greater than 0"
+        )
+    }
+    
+    func testAllowance() {
+        expect{
+            guard let allowance = try Decimal(
+                string: HexAsDecimalString(
+                    hex: self.token.allowance(
+                        owner: self.address,
+                        spender: self.address
+                    )
+                ).value()
+            ) else {
+                throw ERC20TestsErrors.invalidNumber
+            }
+            return allowance
+        }.to(
+            equal(Decimal(0)),
+            description: "Token allowance should be equal to 0"
         )
     }
 }
