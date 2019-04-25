@@ -19,12 +19,12 @@ protocol ERC721 {
     
     func getApproved(tokenId: EthNumber) throws -> EthAddress
     
-    func isApprovedForAll(owner: EthAddress, operator: EthAddress) throws -> Bool
+    func isApprovedForAll(owner: EthAddress, _operator: EthAddress) throws -> Bool
     
     // Executions
     func approve(to: EthAddress, tokenId: EthNumber, sender: EthPrivateKey) throws -> TransactionHash
     
-    func setApprovalForAll(operator: EthAddress, approved: Bool, sender: EthPrivateKey) throws -> TransactionHash
+    func setApprovalForAll(_operator: EthAddress, approved: Bool, sender: EthPrivateKey) throws -> TransactionHash
     
     func transferFrom(from: EthAddress, to: EthAddress, tokenId: EthNumber, sender: EthPrivateKey) throws -> TransactionHash
     

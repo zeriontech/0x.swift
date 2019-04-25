@@ -34,5 +34,22 @@ class ABIDecoder {
         ).value()
     }
     
+    func address(message: ABIMessage, index: Int = 0) throws -> EthAddress {
+        return try EthAddress(
+            bytes: SimpleBytes(
+                bytes: DecodedABIAddress(
+                    abiMessage: message,
+                    index: index
+                ).value()
+            )
+        )
+    }
+    
+    func boolean(message: ABIMessage, index: Int = 0) throws -> Bool {
+        return try DecodedABIBoolean(
+            abiMessage: message, index: index
+        ).value()
+    }
+    
 }
 
