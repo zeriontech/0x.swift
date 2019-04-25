@@ -41,7 +41,7 @@ public class ERC20Token: ERC20 {
     }
     
     func totalSupply() throws -> EthNumber {
-        return try decoder.decodeNumber(
+        return try decoder.number(
             message: interactor.call(
                 function: encoder.totalSupply()
             )
@@ -49,7 +49,7 @@ public class ERC20Token: ERC20 {
     }
     
     func balanceOf(owner: EthAddress) throws -> EthNumber {
-        return try decoder.decodeNumber(
+        return try decoder.number(
             message: interactor.call(
                 function: encoder.balanceOf(owner: owner)
             )
@@ -57,7 +57,7 @@ public class ERC20Token: ERC20 {
     }
     
     func allowance(owner: EthAddress, spender: EthAddress) throws -> EthNumber {
-        return try decoder.decodeNumber(
+        return try decoder.number(
             message: interactor.call(
                 function: encoder.allowance(
                     owner: owner,
@@ -105,7 +105,7 @@ public class ERC20Token: ERC20 {
 extension ERC20Token: ERC20Detailed {
     
     func name() throws -> String? {
-        let name = try decoder.decodeString(
+        let name = try decoder.string(
             message: interactor.call(
                 function: encoder.name()
             )
@@ -114,7 +114,7 @@ extension ERC20Token: ERC20Detailed {
     }
     
     func symbol() throws -> String? {
-        let symbol = try decoder.decodeString(
+        let symbol = try decoder.string(
             message: interactor.call(
                 function: encoder.symbol()
             )
@@ -124,7 +124,7 @@ extension ERC20Token: ERC20Detailed {
     }
     
     func decimals() throws -> EthNumber {
-        return try decoder.decodeNumber(
+        return try decoder.number(
             message: interactor.call(
                 function: encoder.decimals()
             )

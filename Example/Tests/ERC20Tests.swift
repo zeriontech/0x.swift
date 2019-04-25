@@ -30,6 +30,7 @@ class ERC20Tests: XCTestCase {
         )
     )
     
+    //ZRX foundation address
     let address = EthAddress(
         hex: "0x606af0bd4501855914b50e2672c5926b896737ef"
     )

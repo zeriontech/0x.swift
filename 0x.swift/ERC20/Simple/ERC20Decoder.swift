@@ -16,19 +16,21 @@ class ERC20Decoder: ABIDecoder {
 
 class ABIDecoder {
     
-    func decodeNumber(message: ABIMessage) throws -> EthNumber {
+    func number(message: ABIMessage, index: Int = 0) throws -> EthNumber {
         return try EthNumber(
-            hex: DecodedABINumber(
-                abiMessage: message,
-                index: 0
-            ).value().toHexString()
+            hex: SimpleBytes(
+                bytes: DecodedABINumber(
+                    abiMessage: message,
+                    index: index
+                ).value()
+            )
         )
     }
     
-    func decodeString(message: ABIMessage) throws -> String {
+    func string(message: ABIMessage, index: Int = 0) throws -> String {
         return try DecodedABIString(
             abiMessage: message,
-            index: 0
+            index: index
         ).value()
     }
     

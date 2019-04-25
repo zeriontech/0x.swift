@@ -18,13 +18,11 @@ class TransactionHash: BytesScalar {
     init(hash: String) {
         origin = FixedLengthBytes(
             origin: BytesFromHexString(hex: hash),
-            length: 128
+            length: 32
         )
     }
     
     func value() throws -> Data {
         return try origin.value()
     }
-    
-    
 }
