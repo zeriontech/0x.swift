@@ -1,0 +1,28 @@
+{
+    "types": {
+        "EIP712Domain": [
+            {
+                "name": "name",
+                "type": "string"
+            }
+        ],
+        "Test": [
+            {
+                "name": "testAddress",
+                "type": "address"
+            },
+            {
+                "name": "testNumber",
+                "type": "uint256"
+            }
+        ]
+    },
+    "primaryType": "Test",
+    "domain": {
+        "name": "Test"
+    },
+    "message": {
+        "testAddress": "0x0000000000000000000000000000000000000000",
+        "testNumber": "12345"
+    }
+}
