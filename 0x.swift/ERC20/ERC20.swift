@@ -20,7 +20,6 @@ protocol ERC20 {
     func allowance(owner: EthAddress, spender: EthAddress) throws -> EthNumber
     
     // Executions
-    //TODO: Refactor TransactionHash
     func transfer(to: EthAddress, value: EthNumber, sender: EthPrivateKey) throws -> TransactionHash
     
     func transferFrom(from: EthAddress, to: EthAddress, value: EthNumber, sender: EthPrivateKey) throws -> TransactionHash
