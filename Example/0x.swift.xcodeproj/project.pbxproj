@@ -15,6 +15,7 @@
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		69E3DCD5DBD45D8523CAEBB0 /* Pods_0x_swift_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1738E9DA7270A89C39F6BF00 /* Pods_0x_swift_Example.framework */; };
 		8C4497E62266D5DE00EF8575 /* ERC20Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C4497E52266D5DE00EF8575 /* ERC20Tests.swift */; };
+		8CEAE6322272E76E005C4232 /* ERC721Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CEAE6312272E76E005C4232 /* ERC721Tests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,6 +42,7 @@
 		757D36C4F3E3885AC758EC52 /* Pods-0x.swift_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-0x.swift_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-0x.swift_Tests/Pods-0x.swift_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		86341ABFD183519F8F50F428 /* Pods-0x.swift_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-0x.swift_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-0x.swift_Tests/Pods-0x.swift_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		8C4497E52266D5DE00EF8575 /* ERC20Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ERC20Tests.swift; sourceTree = "<group>"; };
+		8CEAE6312272E76E005C4232 /* ERC721Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ERC721Tests.swift; sourceTree = "<group>"; };
 		991A165F7019A3C43B3521DB /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		BEB1B29587148406D451A450 /* Pods-0x.swift_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-0x.swift_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-0x.swift_Example/Pods-0x.swift_Example.release.xcconfig"; sourceTree = "<group>"; };
 		CEC4874F4E9F0F771689E279 /* 0x.swift.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = 0x.swift.podspec; path = ../0x.swift.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
@@ -128,6 +130,7 @@
 			children = (
 				607FACE91AFB9204008FA782 /* Supporting Files */,
 				8C4497E52266D5DE00EF8575 /* ERC20Tests.swift */,
+				8CEAE6312272E76E005C4232 /* ERC721Tests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -398,6 +401,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8C4497E62266D5DE00EF8575 /* ERC20Tests.swift in Sources */,
+				8CEAE6322272E76E005C4232 /* ERC721Tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
