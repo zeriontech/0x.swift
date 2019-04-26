@@ -13,28 +13,27 @@ import SwiftyJSON
 import Web3Swift
 import BigInt
 
-
-class EIP712TypedData {
+public class EIP712TypedData {
     
-    let domainType = "EIP712Domain"
+    public private(set) var type: EIP712StructType!
+    public private(set) var domain: EIP712Domain!
+    public private(set) var encodedData: Data!
     
-    var type: EIP712StructType!
-    var domain: EIP712Domain!
-    var encodedData: Data!
+    private let domainType = "EIP712Domain"
     
-    convenience init(jsonData: Data) throws {
+    public convenience init(jsonData: Data) throws {
         try self.init(json: try JSON(data: jsonData))
     }
     
-    convenience init(jsonString: String) throws {
+    public convenience init(jsonString: String) throws {
         try self.init(json: JSON(parseJSON: jsonString))
     }
     
-    convenience init(jsonObject: Any) throws {
+    public convenience init(jsonObject: Any) throws {
         try self.init(json: JSON(jsonObject))
     }
     
-    init(json: JSON) throws {
+    public init(json: JSON) throws {
 
         let jsonDomain = json["domain"]
         let jsonMessage = json["message"]
@@ -66,7 +65,7 @@ class EIP712TypedData {
         self.domain = domain
     }
 
-    func parseDomain(jsonDomain: JSON, type: EIP712Type) throws -> EIP712Domain {
+    private func parseDomain(jsonDomain: JSON, type: EIP712Type) throws -> EIP712Domain {
         
         return EIP712Domain(name: jsonDomain["name"].string,
                             version: jsonDomain["version"].string,
@@ -75,7 +74,7 @@ class EIP712TypedData {
                             salt: jsonDomain["salt"].string?.data())
     }
     
-    func parseTypes(jsonTypes: [String: JSON]) throws -> [String: EIP712Type] {
+    private func parseTypes(jsonTypes: [String: JSON]) throws -> [String: EIP712Type] {
     
         var types = [String: EIP712Type]()
         
@@ -97,7 +96,7 @@ class EIP712TypedData {
         return types
     }
     
-    func findTypeDependencies(primaryType: EIP712Type, types: [String: EIP712Type], results: [EIP712Type] = []) throws -> [EIP712Type] {
+    private func findTypeDependencies(primaryType: EIP712Type, types: [String: EIP712Type], results: [EIP712Type] = []) throws -> [EIP712Type] {
         
         var results = results
         if (results.contains(where: { $0.name == primaryType.name} ) || types[primaryType.name] == nil) {
@@ -115,19 +114,19 @@ class EIP712TypedData {
         return results
     }
     
-    func encodeType(primaryType: EIP712Type, types: [String: EIP712Type]) throws -> EIP712StructType {
+    private func encodeType(primaryType: EIP712Type, types: [String: EIP712Type]) throws -> EIP712StructType {
         
         let dependencies = try findTypeDependencies(primaryType: primaryType, types: types).filter { $0.name != primaryType.name }
         return EIP712StructType(primary: primaryType, referenced: dependencies)
     }
     
-    func hashType(primaryType: EIP712Type, types: [String: EIP712Type]) throws -> Data {
+    private func hashType(primaryType: EIP712Type, types: [String: EIP712Type]) throws -> Data {
         
         let type = try encodeType(primaryType: primaryType, types: types)
         return try type.hashType()
     }
     
-    func encodeData(data: JSON, primaryType: EIP712Type, types: [String: EIP712Type]) throws -> Data {
+    private func encodeData(data: JSON, primaryType: EIP712Type, types: [String: EIP712Type]) throws -> Data {
         
         var encodedTypes: [EIP712ParameterType] = [.fixedBytes(len: 32)]
         var encodedValues: [Any] = [try self.hashType(primaryType: primaryType, types: types)]
@@ -154,7 +153,7 @@ class EIP712TypedData {
 
 extension EIP712TypedData: EIP712Hashable {
     
-    func hash() throws -> Data {
+    public func hash() throws -> Data {
         
         return encodedData.sha3(.keccak256)
     }

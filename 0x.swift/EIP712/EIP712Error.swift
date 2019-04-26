@@ -10,7 +10,7 @@
 
 import Foundation
 
-enum EIP712Error: Error {
+public enum EIP712Error: Error {
     
     case notImplemented
     case invalidInput

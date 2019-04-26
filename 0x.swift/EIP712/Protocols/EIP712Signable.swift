@@ -11,12 +11,12 @@
 import Foundation
 import Web3Swift
 
-protocol EIP712Signable {
+public protocol EIP712Signable {
     
     func sign(hash: EIP712Hashable) throws -> SECP256k1Signature
 }
 
-extension EIP712Signable {
+public extension EIP712Signable {
     
     func signatureData(hash: EIP712Hashable) throws -> Data {
         

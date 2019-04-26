@@ -12,18 +12,18 @@ import Foundation
 import BigInt
 import Web3Swift
 
-class EIP712ValueEncoder {
+public final class EIP712ValueEncoder {
 
-    let type: EIP712ParameterType
-    let value: Any
+    private let type: EIP712ParameterType
+    private let value: Any
     
-    init(type: EIP712ParameterType, value: Any) {
+    public init(type: EIP712ParameterType, value: Any) {
         
         self.type = type
         self.value = value
     }
     
-    func makeABIEncodedParameter() throws -> ABIEncodedParameter {
+    public func makeABIEncodedParameter() throws -> ABIEncodedParameter {
         
         switch type {
         case .bool:
@@ -42,8 +42,11 @@ class EIP712ValueEncoder {
             return try encodeObject()
         }
     }
+}
+
+extension EIP712ValueEncoder {
     
-    func encodeBool() throws -> ABIEncodedParameter {
+    private func encodeBool() throws -> ABIEncodedParameter {
         
         guard let bool = value as? Bool else {
             throw EIP712Error.invalidTypedDataValue
@@ -51,7 +54,7 @@ class EIP712ValueEncoder {
         return ABIBoolean(origin: bool)
     }
     
-    func encodeAddress() throws -> ABIEncodedParameter {
+    private func encodeAddress() throws -> ABIEncodedParameter {
         
         guard let value = value as? String else {
             throw EIP712Error.invalidTypedDataValue
@@ -59,7 +62,7 @@ class EIP712ValueEncoder {
         return ABIAddress(address: EthAddress(hex: value))
     }
     
-    func encodeString() throws -> ABIEncodedParameter {
+    private func encodeString() throws -> ABIEncodedParameter {
         
         guard let value = value as? String, let data = value.data() else {
             throw EIP712Error.invalidTypedDataValue
@@ -67,7 +70,7 @@ class EIP712ValueEncoder {
         return ABIFixedBytes(origin: SimpleBytes(bytes: data.sha3(.keccak256)))
     }
     
-    func encodeFixedBytes() throws -> ABIEncodedParameter {
+    private func encodeFixedBytes() throws -> ABIEncodedParameter {
         
         let data: Data
         if let value = value as? String {
@@ -80,7 +83,7 @@ class EIP712ValueEncoder {
         return ABIFixedBytes(origin: SimpleBytes(bytes: data))
     }
     
-    func encodeInt() throws -> ABIEncodedParameter {
+    private func encodeInt() throws -> ABIEncodedParameter {
         
         let number: Int
         if let value = value as? Int {
@@ -93,7 +96,7 @@ class EIP712ValueEncoder {
         return ABIUnsignedNumber(origin: EthNumber(value: number))
     }
     
-    func encodeBytes() throws -> ABIEncodedParameter {
+    private func encodeBytes() throws -> ABIEncodedParameter {
         
         let data: Data
         if let value = value as? String {
@@ -106,7 +109,7 @@ class EIP712ValueEncoder {
         return ABIFixedBytes(origin: SimpleBytes(bytes: data.sha3(.keccak256)))
     }
     
-    func encodeObject() throws -> ABIEncodedParameter {
+    private func encodeObject() throws -> ABIEncodedParameter {
         
         guard let value = value as? EIP712Representable else {
             throw EIP712Error.invalidTypedDataValue

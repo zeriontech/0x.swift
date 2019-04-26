@@ -10,7 +10,7 @@
 
 import Foundation
 
-enum EIP712ParameterType {
+public enum EIP712ParameterType {
     
     case bool
     case address
@@ -21,7 +21,7 @@ enum EIP712ParameterType {
     case int(len: Int)
     case object(name: String)
     
-    static func parseBytesSize(type: String, prefix: String) throws -> Int {
+    private static func parseBytesSize(type: String, prefix: String) throws -> Int {
         
         guard type.starts(with: prefix) else {
             throw EIP712Error.invalidType(name: type)
@@ -35,7 +35,7 @@ enum EIP712ParameterType {
         return size
     }
     
-    static func parseIntSize(type: String, prefix: String) throws -> Int {
+    private static func parseIntSize(type: String, prefix: String) throws -> Int {
         
         guard type.starts(with: prefix) else {
             throw EIP712Error.invalidType(name: type)
@@ -52,7 +52,7 @@ enum EIP712ParameterType {
         return size
     }
     
-    static func parse(type: String) throws -> EIP712ParameterType {
+    public static func parse(type: String) throws -> EIP712ParameterType {
         
         if type == "bool" {
             return .bool
@@ -85,7 +85,7 @@ enum EIP712ParameterType {
         return object(name: type)
     }
     
-    func raw() -> String {
+    public func raw() -> String {
         
         switch self {
         case .bool: return "bool"
@@ -101,12 +101,12 @@ enum EIP712ParameterType {
 }
 
 
-struct EIP712Parameter {
+public struct EIP712Parameter {
     
-    let name: String
-    let type: EIP712ParameterType
+    public let name: String
+    public let type: EIP712ParameterType
     
-    func encode() -> String {
+    public func encode() -> String {
         return "\(type.raw()) \(name)"
     }
 }

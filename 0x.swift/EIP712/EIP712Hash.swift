@@ -10,18 +10,18 @@
 
 import Foundation
 
-class EIP712Hash: EIP712Hashable {
+public class EIP712Hash: EIP712Hashable {
     
-    let typedData: EIP712Hashable
-    let domain: EIP712Hashable
+    private let typedData: EIP712Hashable
+    private let domain: EIP712Hashable
     
-    init(domain: EIP712Hashable, typedData: EIP712Hashable) {
+    public init(domain: EIP712Hashable, typedData: EIP712Hashable) {
         
         self.domain = domain
         self.typedData = typedData
     }
 
-    func hash() throws -> Data {
+    public func hash() throws -> Data {
         guard
             let domainData = try? domain.hash(),
             let structData = try? typedData.hash()
