@@ -10,22 +10,23 @@
 
 import Foundation
 
-struct EIP712StructType {
+public struct EIP712StructType {
     
-    let types: [EIP712Type]
-    var primaryType: EIP712Type? {
+    public let types: [EIP712Type]
+    
+    public var primaryType: EIP712Type? {
         return types.first
     }
     
-    init(primary: EIP712Type, referenced: [EIP712Type] = []) {
+    public init(primary: EIP712Type, referenced: [EIP712Type] = []) {
         types = [primary] + referenced.sorted { $0.name < $1.name }
     }
     
-    func encode() -> String {
+    public func encode() -> String {
         return types.reduce("") { $0 + $1.encode()}
     }
     
-    func hashType() throws -> Data {
+    public func hashType() throws -> Data {
         return try encode().data().sha3(.keccak256)
     }
 }

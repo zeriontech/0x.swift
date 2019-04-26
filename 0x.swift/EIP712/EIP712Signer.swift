@@ -12,16 +12,16 @@ import Foundation
 import Web3Swift
 import CryptoSwift
 
-class EIP712Signer: EIP712Signable {
+public final class EIP712Signer: EIP712Signable {
     
-    let privateKey: EthPrivateKey
+    private let privateKey: EthPrivateKey
     
-    init(privateKey: EthPrivateKey) {
+    public init(privateKey: EthPrivateKey) {
         
         self.privateKey = privateKey
     }
     
-    func sign(hash: EIP712Hashable) throws -> SECP256k1Signature {
+    public func sign(hash: EIP712Hashable) throws -> SECP256k1Signature {
         
         let signature = SECP256k1Signature(
             digest: SimpleBytes(bytes: try hash.hash()),

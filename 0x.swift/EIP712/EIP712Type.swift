@@ -10,12 +10,12 @@
 
 import Foundation
 
-struct EIP712Type {
+public struct EIP712Type {
     
-    let name: String
-    let parameters: [EIP712Parameter]
+    public let name: String
+    public let parameters: [EIP712Parameter]
     
-    func encode() -> String {
+    public func encode() -> String {
         let encodedParameters = parameters.map { $0.encode() }.joined(separator: ",")
         return "\(name)(\(encodedParameters))"
     }

@@ -11,13 +11,13 @@
 import Foundation
 import Web3Swift
 
-protocol EIP712Representable: EIP712Hashable {
+public protocol EIP712Representable: EIP712Hashable {
     
     var typeName: String { get }
     var values: [EIP712Value] { get }
 }
 
-extension EIP712Representable {
+public extension EIP712Representable {
     
     var typeName: String {
         return String(describing: Swift.type(of: self))

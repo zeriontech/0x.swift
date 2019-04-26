@@ -10,7 +10,7 @@
 
 import Foundation
 
-protocol EIP712Hashable {
+public protocol EIP712Hashable {
     
     func hash() throws -> Data
 }

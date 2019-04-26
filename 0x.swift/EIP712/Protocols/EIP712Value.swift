@@ -11,7 +11,7 @@
 import Foundation
 import Web3Swift
 
-protocol EIP712Value {
+public protocol EIP712Value {
     
     var parameter: EIP712Parameter { get }
     var value: Any { get }

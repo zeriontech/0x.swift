@@ -10,15 +10,15 @@
 
 import Foundation
 
-struct EIP712Domain: EIP712Representable {
+public struct EIP712Domain: EIP712Representable {
     
-    let name: String?
-    let version: String?
-    let chainID: Int?
-    let verifyingContract: String?
-    let salt: Data?
+    public let name: String?
+    public let version: String?
+    public let chainID: Int?
+    public let verifyingContract: String?
+    public let salt: Data?
     
-    var values: [EIP712Value] {
+    public var values: [EIP712Value] {
         
         var data = [EIP712Value]()
         
