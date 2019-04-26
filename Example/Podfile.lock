@@ -1,6 +1,6 @@
 PODS:
   - 0x.swift (0.1.0):
-    - Web3Swift.io (~> 0.0.2)
+    - Web3Swift.io (~> 0.0.3)
   - BigInt (3.1.0):
     - SipHash (~> 1.2)
   - CryptoSwift (1.0.0)
@@ -36,7 +36,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  0x.swift: 70bf73d2331dbcb771750c9ecd91f936a949df1a
+  0x.swift: 9978355162bb8d0af4a03c33f2ba427625c4db8a
   BigInt: 76b5dfdfa3e2e478d4ffdf161aeede5502e2742f
   CryptoSwift: d81eeaa59dc5a8d03720fe919a6fd07b51f7439f
   Nimble: 45f786ae66faa9a709624227fae502db55a8bdd0
