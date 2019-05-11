@@ -36,7 +36,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  0x.swift: 9978355162bb8d0af4a03c33f2ba427625c4db8a
+  0x.swift: b8b5adbef53342787919fcd156f6f3c3b226113d
   BigInt: 76b5dfdfa3e2e478d4ffdf161aeede5502e2742f
   CryptoSwift: d81eeaa59dc5a8d03720fe919a6fd07b51f7439f
   Nimble: 45f786ae66faa9a709624227fae502db55a8bdd0
