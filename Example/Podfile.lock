@@ -19,6 +19,7 @@ DEPENDENCIES:
   - 0x.swift (from `../`)
   - Nimble (~> 8.0)
   - Quick (~> 2.0)
+  - Web3Swift.io (from `https://github.com/zeriontech/Web3Swift.git`, branch `216_log_fetching`)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -29,11 +30,18 @@ SPEC REPOS:
     - secp256k1_ios
     - SipHash
     - SwiftyJSON
-    - Web3Swift.io
 
 EXTERNAL SOURCES:
   0x.swift:
     :path: "../"
+  Web3Swift.io:
+    :branch: 216_log_fetching
+    :git: https://github.com/zeriontech/Web3Swift.git
+
+CHECKOUT OPTIONS:
+  Web3Swift.io:
+    :commit: 8c9f19e0b63434f2e7ba388feaa7e67478983eb0
+    :git: https://github.com/zeriontech/Web3Swift.git
 
 SPEC CHECKSUMS:
   0x.swift: b8b5adbef53342787919fcd156f6f3c3b226113d
@@ -46,6 +54,6 @@ SPEC CHECKSUMS:
   SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
   Web3Swift.io: 767a6d8d411ef1b9178d52bf7883ac8866f25f14
 
-PODFILE CHECKSUM: 76eab880130d5b12cdbd5888a6eb38dfde905fc6
+PODFILE CHECKSUM: 2f12ecb667446483a04e6bf937fb822a60bcc9bb
 
 COCOAPODS: 1.5.3
