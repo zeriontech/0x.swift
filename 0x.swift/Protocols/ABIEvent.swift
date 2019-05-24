@@ -10,6 +10,7 @@
 
 import Foundation
 import Web3Swift
+import CryptoSwift
 
 enum ABIEventError: Error {
     
@@ -28,16 +29,16 @@ public protocol ABIEvent {
     
     static var types: [ABIEventType] { get }
 
-    static func signature() throws -> String
+    static func signature() throws -> Data
     
-    init?(log: TransactionLog) throws
+    init(log: TransactionLog) throws
 }
 
 extension ABIEvent {
     
     public static var name: String {
         
-        return String(describing: type(of: self))
+        return String(describing: self)
     }
     
     public static var dataTypes: [ABIType.Type] {
@@ -49,15 +50,14 @@ extension ABIEvent {
     
     public static func verifySignature(log: TransactionLog) throws {
         
-        let signature = String(data: try log.signature().value(), encoding: .utf8)
-        
-        guard try Self.signature() == signature else {
+        guard try log.signature().value() == Self.signature() else {
             throw ABIEventError.malformedEvent
         }
     }
     
-    public static func signature() throws -> String {
+    public static func signature() throws -> Data {
         
-        return name + "(\(types.map { $0.type.rawType() }.joined(separator: ",")))"
+        let signatureString = name + "(\(types.map { $0.type.rawType() }.joined(separator: ",")))"
+        return try signatureString.data().sha3(.keccak256)
     }
 }

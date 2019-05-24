@@ -25,12 +25,12 @@ public struct ERC20Events {
         public let to: EthAddress
         public let value: EthNumber
         
-        public init?(log: TransactionLog) throws {
+        public init(log: TransactionLog) throws {
             
             try Transfer.verifySignature(log: log)
             
-            self.from = EthAddress(bytes: try log.topics()[1])
-            self.to = EthAddress(bytes: try log.topics()[2])
+            self.from = EthAddress(bytes: TrimmedZeroPrefixBytes(origin: try log.topics()[1]))
+            self.to = EthAddress(bytes: TrimmedZeroPrefixBytes(origin: try log.topics()[2]))
             self.value = try EthNumber.decode(message: log.data(), index: 0)
         }
     }
@@ -47,12 +47,12 @@ public struct ERC20Events {
         public let spender: EthAddress
         public let value: EthNumber
         
-        public init?(log: TransactionLog) throws {
+        public init(log: TransactionLog) throws {
             
             try Approval.verifySignature(log: log)
             
-            self.owner = EthAddress(bytes: try log.topics()[1])
-            self.spender = EthAddress(bytes: try log.topics()[2])
+            self.owner = EthAddress(bytes: TrimmedZeroPrefixBytes(origin: try log.topics()[1]))
+            self.spender = EthAddress(bytes: TrimmedZeroPrefixBytes(origin: try log.topics()[2]))
             self.value = try EthNumber.decode(message: log.data(), index: 0)
         }
     }

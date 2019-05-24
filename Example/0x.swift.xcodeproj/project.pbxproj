@@ -17,6 +17,8 @@
 		69E3DCD5DBD45D8523CAEBB0 /* Pods_0x_swift_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1738E9DA7270A89C39F6BF00 /* Pods_0x_swift_Example.framework */; };
 		8C4497E62266D5DE00EF8575 /* ERC20Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C4497E52266D5DE00EF8575 /* ERC20Tests.swift */; };
 		8CEAE6322272E76E005C4232 /* ERC721Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CEAE6312272E76E005C4232 /* ERC721Tests.swift */; };
+		F8C93A1F229840330095E26A /* EventsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C93A1D22983DAC0095E26A /* EventsTests.swift */; };
+		F8C93A21229853B00095E26A /* TypedDataObjectHashingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C93A20229853B00095E26A /* TypedDataObjectHashingTests.swift */; };
 		F8E3C11A226803EF00AE766F /* simple.json in Resources */ = {isa = PBXBuildFile; fileRef = F8E3C117226803EF00AE766F /* simple.json */; };
 		F8E3C11B226803EF00AE766F /* mail.json in Resources */ = {isa = PBXBuildFile; fileRef = F8E3C118226803EF00AE766F /* mail.json */; };
 		F8E3C11C226803EF00AE766F /* order.json in Resources */ = {isa = PBXBuildFile; fileRef = F8E3C119226803EF00AE766F /* order.json */; };
@@ -54,6 +56,8 @@
 		D518A01971A7FC62703F818B /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		E93D3BE9BE040FC9C10164D3 /* Pods_0x_swift_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_0x_swift_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F13BD88CD49049C1EA4CD6A1 /* Pods-0x.swift_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-0x.swift_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-0x.swift_Example/Pods-0x.swift_Example.debug.xcconfig"; sourceTree = "<group>"; };
+		F8C93A1D22983DAC0095E26A /* EventsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsTests.swift; sourceTree = "<group>"; };
+		F8C93A20229853B00095E26A /* TypedDataObjectHashingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypedDataObjectHashingTests.swift; sourceTree = "<group>"; };
 		F8E3C117226803EF00AE766F /* simple.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = simple.json; sourceTree = "<group>"; };
 		F8E3C118226803EF00AE766F /* mail.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = mail.json; sourceTree = "<group>"; };
 		F8E3C119226803EF00AE766F /* order.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = order.json; sourceTree = "<group>"; };
@@ -137,10 +141,12 @@
 			isa = PBXGroup;
 			children = (
 				607FACEB1AFB9204008FA782 /* TypedDataHashingTests.swift */,
-				F8E3C116226803EF00AE766F /* TypedData */,
-				607FACE91AFB9204008FA782 /* Supporting Files */,
+				F8C93A20229853B00095E26A /* TypedDataObjectHashingTests.swift */,
 				8C4497E52266D5DE00EF8575 /* ERC20Tests.swift */,
 				8CEAE6312272E76E005C4232 /* ERC721Tests.swift */,
+				F8C93A1D22983DAC0095E26A /* EventsTests.swift */,
+				F8E3C116226803EF00AE766F /* TypedData */,
+				607FACE91AFB9204008FA782 /* Supporting Files */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -416,6 +422,7 @@
 			files = (
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
+				F8C93A21229853B00095E26A /* TypedDataObjectHashingTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -423,6 +430,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F8C93A1F229840330095E26A /* EventsTests.swift in Sources */,
 				8C4497E62266D5DE00EF8575 /* ERC20Tests.swift in Sources */,
 				8CEAE6322272E76E005C4232 /* ERC721Tests.swift in Sources */,
 				607FACEC1AFB9204008FA782 /* TypedDataHashingTests.swift in Sources */,
