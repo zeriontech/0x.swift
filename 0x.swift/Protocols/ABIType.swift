@@ -14,14 +14,21 @@ import Web3Swift
 public protocol ABIType {
     
     static func decode(message: ABIMessage, index: Int) throws -> Self
+    
+    static func rawType() -> String
 }
 
 extension Bool: ABIType {
     
     public static func decode(message: ABIMessage, index: Int = 0) throws -> Bool {
         return try DecodedABIBoolean(
-            abiMessage: message, index: index
+            abiMessage: message,
+            index: index
         ).value()
+    }
+    
+    public static func rawType() -> String {
+        return "bool"
     }
 }
 
@@ -32,6 +39,10 @@ extension String: ABIType {
             abiMessage: message,
             index: index
         ).value()
+    }
+    
+    public static func rawType() -> String {
+        return "string"
     }
 }
 
@@ -47,6 +58,10 @@ extension EthNumber: ABIType {
             )
         )
     }
+    
+    public static func rawType() -> String {
+        return "uint256"
+    }
 }
 
 extension EthAddress: ABIType {
@@ -60,5 +75,9 @@ extension EthAddress: ABIType {
                 ).value()
             )
         )
+    }
+    
+    public static func rawType() -> String {
+        return "address"
     }
 }

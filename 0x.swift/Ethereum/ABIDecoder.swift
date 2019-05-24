@@ -32,11 +32,5 @@ class ABIDecoder {
     func decode<T: ABIType>(message: ABIMessage, index: Int = 0) throws -> T {
         return try T.decode(message: message, index: index)
     }
-    
-    func decode(data: Data, types: [ABIType.Type]) throws -> [ABIMessage] {
-        
-        // TODO: implement data decoding from types
-        throw ABIEventError.notImplemented
-    }
 }
 

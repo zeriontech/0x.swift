@@ -14,8 +14,6 @@ import Web3Swift
 enum ABIEventError: Error {
     
     case malformedEvent
-    case incorrectParameterCount
-    case notImplemented
 }
 
 public struct ABIEventType {
@@ -30,13 +28,9 @@ public protocol ABIEvent {
     
     static var types: [ABIEventType] { get }
 
-    static func checkParameters(topics: [String], data: [ABIType]) throws
-    
     static func signature() throws -> String
     
-    var log: EthereumLog { get }
-    
-    init?(log: EthereumLog) throws
+    init?(log: TransactionLog) throws
 }
 
 extension ABIEvent {
@@ -53,19 +47,17 @@ extension ABIEvent {
             .compactMap { $0.element.type }
     }
     
-    public static func checkParameters(topics: [String], data: [ABIType]) throws {
+    public static func verifySignature(log: TransactionLog) throws {
         
-        let indexedCount = Self.types.filter { $0.indexed == true }.count
-        let unindexedCount = Self.types.filter { $0.indexed == false }.count
+        let signature = String(data: try log.signature().value(), encoding: .utf8)
         
-        guard topics.count == indexedCount, data.count == unindexedCount else {
-            throw ABIEventError.incorrectParameterCount
+        guard try Self.signature() == signature else {
+            throw ABIEventError.malformedEvent
         }
     }
     
     public static func signature() throws -> String {
         
-        // TODO: Make signature from name and types
-        throw ABIEventError.notImplemented
+        return name + "(\(types.map { $0.type.rawType() }.joined(separator: ",")))"
     }
 }
