@@ -18,7 +18,7 @@
 		8C4497E62266D5DE00EF8575 /* ERC20Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C4497E52266D5DE00EF8575 /* ERC20Tests.swift */; };
 		8CEAE6322272E76E005C4232 /* ERC721Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CEAE6312272E76E005C4232 /* ERC721Tests.swift */; };
 		F8C93A1F229840330095E26A /* EventsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C93A1D22983DAC0095E26A /* EventsTests.swift */; };
-		F8C93A21229853B00095E26A /* TypedDataObjectHashingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C93A20229853B00095E26A /* TypedDataObjectHashingTests.swift */; };
+		F8C93A23229856E00095E26A /* TypedDataObjectHashingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C93A20229853B00095E26A /* TypedDataObjectHashingTests.swift */; };
 		F8E3C11A226803EF00AE766F /* simple.json in Resources */ = {isa = PBXBuildFile; fileRef = F8E3C117226803EF00AE766F /* simple.json */; };
 		F8E3C11B226803EF00AE766F /* mail.json in Resources */ = {isa = PBXBuildFile; fileRef = F8E3C118226803EF00AE766F /* mail.json */; };
 		F8E3C11C226803EF00AE766F /* order.json in Resources */ = {isa = PBXBuildFile; fileRef = F8E3C119226803EF00AE766F /* order.json */; };
@@ -422,7 +422,6 @@
 			files = (
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
-				F8C93A21229853B00095E26A /* TypedDataObjectHashingTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -430,6 +429,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F8C93A23229856E00095E26A /* TypedDataObjectHashingTests.swift in Sources */,
 				F8C93A1F229840330095E26A /* EventsTests.swift in Sources */,
 				8C4497E62266D5DE00EF8575 /* ERC20Tests.swift in Sources */,
 				8CEAE6322272E76E005C4232 /* ERC721Tests.swift in Sources */,
