@@ -15,6 +15,7 @@ import CryptoSwift
 enum ABIEventError: Error {
     
     case malformedEvent
+    case wrongSignature
 }
 
 public struct ABIEventType {
@@ -48,16 +49,16 @@ extension ABIEvent {
             .compactMap { $0.element.type }
     }
     
-    public static func verifySignature(log: TransactionLog) throws {
+    public static func verifySignature(log: TransactionLog) throws -> Bool {
         
-        guard try log.signature().value() == Self.signature() else {
-            throw ABIEventError.malformedEvent
-        }
+        let eventSignature = try Self.signature()
+        let logSignature = try log.signature().value()
+        return eventSignature == logSignature
     }
     
     public static func signature() throws -> Data {
         
-        let signatureString = name + "(\(types.map { $0.type.rawType() }.joined(separator: ",")))"
+        let signatureString = name + "(\(types.map { $0.type.abiType() }.joined(separator: ",")))"
         return try signatureString.data().sha3(.keccak256)
     }
 }

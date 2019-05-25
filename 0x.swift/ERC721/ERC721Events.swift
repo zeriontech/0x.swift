@@ -27,10 +27,14 @@ public struct ERC721Events {
         
         public init(log: TransactionLog) throws {
             
-            try Transfer.verifySignature(log: log)
+            guard try Transfer.verifySignature(log: log) else {
+                throw ABIEventError.wrongSignature
+            }
             
-            self.from = EthAddress(bytes: TrimmedZeroPrefixBytes(origin: try log.topics()[1]))
-            self.to = EthAddress(bytes: TrimmedZeroPrefixBytes(origin: try log.topics()[2]))
+            let decoder = ABIDecoder()
+            
+            self.from = try decoder.decode(bytes: try log.topics()[1])
+            self.to = try decoder.decode(bytes: try log.topics()[2])
             self.tokenId = EthNumber(hex: try log.topics()[3])
         }
     }
@@ -49,11 +53,15 @@ public struct ERC721Events {
         
         public init(log: TransactionLog) throws {
             
-            try Approval.verifySignature(log: log)
+            guard try Approval.verifySignature(log: log) else {
+                throw ABIEventError.wrongSignature
+            }
             
-            self.owner = EthAddress(bytes: TrimmedZeroPrefixBytes(origin: try log.topics()[1]))
-            self.approved = EthAddress(bytes: TrimmedZeroPrefixBytes(origin: try log.topics()[2]))
-            self.tokenId = EthNumber(hex: try log.topics()[3])
+            let decoder = ABIDecoder()
+            
+            self.owner = try decoder.decode(bytes: try log.topics()[1])
+            self.approved = try decoder.decode(bytes: try log.topics()[2])
+            self.tokenId = try decoder.decode(bytes: log.topics()[3])
         }
     }
     
@@ -71,11 +79,15 @@ public struct ERC721Events {
         
         public init(log: TransactionLog) throws {
             
-            try Approval.verifySignature(log: log)
+            guard try Approval.verifySignature(log: log) else {
+                throw ABIEventError.wrongSignature
+            }
             
-            self.owner = EthAddress(bytes: TrimmedZeroPrefixBytes(origin: try log.topics()[1]))
-            self.operator = EthAddress(bytes: TrimmedZeroPrefixBytes(origin: try log.topics()[2]))
-            self.approved = try Bool.decode(message: log.data(), index: 0)
+            let decoder = ABIDecoder()
+            
+            self.owner = try decoder.decode(bytes: try log.topics()[1])
+            self.operator = try decoder.decode(bytes: try log.topics()[2])
+            self.approved = try decoder.decode(message: log.data(), index: 0)
         }
     }
 }

@@ -27,11 +27,15 @@ public struct ERC20Events {
         
         public init(log: TransactionLog) throws {
             
-            try Transfer.verifySignature(log: log)
+            guard try Transfer.verifySignature(log: log) else {
+                throw ABIEventError.wrongSignature
+            }
             
-            self.from = EthAddress(bytes: TrimmedZeroPrefixBytes(origin: try log.topics()[1]))
-            self.to = EthAddress(bytes: TrimmedZeroPrefixBytes(origin: try log.topics()[2]))
-            self.value = try EthNumber.decode(message: log.data(), index: 0)
+            let decoder = ABIDecoder()
+            
+            self.from = try decoder.decode(bytes: try log.topics()[1])
+            self.to = try decoder.decode(bytes: try log.topics()[2])
+            self.value = try decoder.decode(message: log.data(), index: 0)
         }
     }
     
@@ -49,11 +53,15 @@ public struct ERC20Events {
         
         public init(log: TransactionLog) throws {
             
-            try Approval.verifySignature(log: log)
+            guard try Approval.verifySignature(log: log) else {
+                throw ABIEventError.wrongSignature
+            }
             
-            self.owner = EthAddress(bytes: TrimmedZeroPrefixBytes(origin: try log.topics()[1]))
-            self.spender = EthAddress(bytes: TrimmedZeroPrefixBytes(origin: try log.topics()[2]))
-            self.value = try EthNumber.decode(message: log.data(), index: 0)
+            let decoder = ABIDecoder()
+            
+            self.owner = try decoder.decode(bytes: try log.topics()[1])
+            self.spender = try decoder.decode(bytes: try log.topics()[2])
+            self.value = try decoder.decode(message: log.data(), index: 0)
         }
     }
 }

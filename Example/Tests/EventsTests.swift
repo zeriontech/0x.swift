@@ -72,12 +72,12 @@ public final class MockedTransactionLogWithTransfer: TransactionLog {
 
 class EventsTests: XCTestCase {
     
+    let log = MockedTransactionLogWithTransfer()
+    
     func testEventSignature() {
         
-        let log = MockedTransactionLogWithTransfer()
-        
         expect{
-            try ERC20Events.Transfer.verifySignature(log: log)
+            try ERC20Events.Transfer.verifySignature(log: self.log)
         }.notTo(
             throwError(),
             description: "Make sure log parsing is correct"
@@ -86,10 +86,8 @@ class EventsTests: XCTestCase {
     
     func testEventFrom() {
         
-        let log = MockedTransactionLogWithTransfer()
-        
         expect{
-            let event = try ERC20Events.Transfer(log: log)
+            let event = try ERC20Events.Transfer(log: self.log)
             return try event.from.value().toHexString()
         }.to(
             equal("fbb1b73c4f0bda4f67dca266ce6ef42f520fbb98"),
@@ -99,10 +97,8 @@ class EventsTests: XCTestCase {
     
     func testEventTo() {
         
-        let log = MockedTransactionLogWithTransfer()
-        
         expect{
-            let event = try ERC20Events.Transfer(log: log)
+            let event = try ERC20Events.Transfer(log: self.log)
             return try event.to.value().toHexString()
         }.to(
             equal("09d0de315fce62f67a5588cd877dbc5408d67587"),
@@ -112,10 +108,8 @@ class EventsTests: XCTestCase {
     
     func testEventValue() {
         
-        let log = MockedTransactionLogWithTransfer()
-        
         expect{
-            let event = try ERC20Events.Transfer(log: log)
+            let event = try ERC20Events.Transfer(log: self.log)
             return try event.value.value().toHexString()
         }.to(
             equal("4870b6f94e596c00"),
