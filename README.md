@@ -81,9 +81,126 @@ print(transfer.to.toPrefixedHexString())
 print(transfer.value.toDecimalString())
 ```
 
-### SigningTypedData
+## Working with typed data
+
+### Hashing typed data from JSON
 ```swift
-//TODO: Add example of hashing 0x order
+let data = try EIP712TypedData(jsonString: typedDataJson)
+let hash = EIP712Hash(domain: data.domain, typedData: data)
+```
+
+### Constructing typed data from Swift objects
+```swift
+struct Order {
+    
+    let makerAddress: String
+    let takerAddress: String
+    let feeRecipientAddress: String
+    let senderAddress: String
+    let makerAssetAmount: Int
+    let takerAssetAmount: Int
+    let makerFee: Int
+    let takerFee: Int
+    let expirationTimeSeconds: Int
+    let salt: Int
+    let makerAssetData: Data
+    let takerAssetData: Data
+}
+
+extension Order: EIP712Representable {
+    
+    var values: [EIP712Value] {
+        return [
+            EIP712SimpleValue(
+                parameter: EIP712Parameter(name: "makerAddress", type: .address),
+                value: makerAddress
+            ),
+            EIP712SimpleValue(
+                parameter: EIP712Parameter(name: "takerAddress", type: .address),
+                value: takerAddress
+            ),
+            EIP712SimpleValue(
+                parameter: EIP712Parameter(name: "feeRecipientAddress", type: .address),
+                value: feeRecipientAddress
+            ),
+            EIP712SimpleValue(
+                parameter: EIP712Parameter(name: "senderAddress", type: .address),
+                value: senderAddress
+            ),
+            EIP712SimpleValue(
+                parameter: EIP712Parameter(name: "makerAssetAmount", type: .uint(len: 256)),
+                value: makerAssetAmount
+            ),
+            EIP712SimpleValue(
+                parameter: EIP712Parameter(name: "takerAssetAmount", type: .uint(len: 256)),
+                value: takerAssetAmount
+            ),
+            EIP712SimpleValue(
+                parameter: EIP712Parameter(name: "makerFee", type: .uint(len: 256)),
+                value: makerFee
+            ),
+            EIP712SimpleValue(
+                parameter: EIP712Parameter(name: "takerFee", type: .uint(len: 256)),
+                value: takerFee
+            ),
+            EIP712SimpleValue(
+                parameter: EIP712Parameter(name: "expirationTimeSeconds", type: .uint(len: 256)),
+                value: expirationTimeSeconds
+            ),
+            EIP712SimpleValue(
+                parameter: EIP712Parameter(name: "salt", type: .uint(len: 256)),
+                value: salt
+            ),
+            EIP712SimpleValue(
+                parameter: EIP712Parameter(name: "makerAssetData", type: .bytes),
+                value: makerAssetData
+            ),
+            EIP712SimpleValue(
+                parameter: EIP712Parameter(name: "takerAssetData", type: .bytes),
+                value: takerAssetData
+            ),
+        ]
+    }
+}
+
+let order = Order(
+    makerAddress: "0xc0ffee254729296a45a3885639ac7e10f9d54979",
+    takerAddress: "0x999999cf1046e68e36e1aa2e0e07105eddd1f08e",
+    feeRecipientAddress: "0x0000000000000000000000000000000000000000",
+    senderAddress: "0x0000000000000000000000000000000000000000",
+    makerAssetAmount: 1,
+    takerAssetAmount: 1,
+    makerFee: 0,
+    takerFee: 0,
+    expirationTimeSeconds: 3600,
+    salt: 0,
+    makerAssetData: // ABIv2 encoded data,
+    takerAssetData: // ABIv2 encoded data
+)
+
+let domain = EIP712Domain(
+    name: "My DApp",
+    version: "1.0.0",
+    chainID: 1,
+    verifyingContract: nil,
+    salt: nil
+)
+
+let hash = EIP712Hash(domain: domain, typedData: order)
+```
+
+### Signing typed data
+```swift
+let privateKey = EthPrivateKey(hex: "SIGNER_PRIVATE_KEY")
+let signer = EIP712Signer(privateKey: privateKey)
+let signature = try signer.signatureData(hash: hash)
+```
+
+### Verifying typed data signature
+```swift
+let address = EthAddress(hex: "SIGNER_ADDRESS")
+let verifier = EIP712SignatureVerifier()
+return try verifier.verify(data: hash, signature: signature, address: address)
 ```
 
 ## Author
