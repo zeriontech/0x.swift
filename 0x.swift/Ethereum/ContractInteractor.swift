@@ -64,8 +64,6 @@ class Web3ContractInteractor: ContractInteractor {
             throw errors.failedToSend
         }
         
-        return TransactionHash(hash: hash)
-        
+        return EthTransactionHash(transactionHash: BytesFromHexString(hex: hash))
     }
-    
 }

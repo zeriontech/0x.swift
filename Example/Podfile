@@ -3,10 +3,12 @@ platform :ios, '10.0'
 
 target '0x.swift_Example' do
     pod '0x.swift', :path => '../'
+    pod 'Web3Swift.io', :git => 'https://github.com/zeriontech/Web3Swift.git', :branch => '216_log_fetching'
 end
 
 target '0x.swift_Tests' do
     pod '0x.swift', :path => '../'
     pod 'Quick', '~> 2.0'
     pod 'Nimble', '~> 8.0'
+    pod 'Web3Swift.io', :git => 'https://github.com/zeriontech/Web3Swift.git', :branch => '216_log_fetching'
 end

@@ -11,6 +11,7 @@
 import Nimble
 import Quick
 import Web3Swift
+
 @testable import Swifty0x
 
 class ERC20Tests: XCTestCase {
@@ -29,12 +30,12 @@ class ERC20Tests: XCTestCase {
             apiKey: "ETi2ntZoWxd6nTI1qE13Q4I1eLB8AMDl"
         )
     )
-    
+
     //ZRX foundation address
     let address = EthAddress(
         hex: "0x606af0bd4501855914b50e2672c5926b896737ef"
     )
-    
+
     func testName() {
         expect{
             try self.token.name()
@@ -43,7 +44,7 @@ class ERC20Tests: XCTestCase {
            description: "Token should be named correctly"
         )
     }
-    
+
     func testDecimals() {
         expect{
             guard let number = try Decimal(
@@ -59,7 +60,7 @@ class ERC20Tests: XCTestCase {
             description: "Token should have correct decimals"
         )
     }
-    
+
     func testSymbol() {
         expect{
             try self.token.symbol()
@@ -68,7 +69,7 @@ class ERC20Tests: XCTestCase {
             description: "Token should have correct symbol"
         )
     }
-    
+
     func testBalanceOf() {
         expect{
             guard let number = try Decimal(
@@ -86,7 +87,7 @@ class ERC20Tests: XCTestCase {
             description: "Token balance should be greater than 0"
         )
     }
-    
+
     func testAllowance() {
         expect{
             guard let allowance = try Decimal(
