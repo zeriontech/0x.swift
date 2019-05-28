@@ -179,10 +179,10 @@ let order = Order(
 )
 
 let domain = EIP712Domain(
-    name: "My DApp",
-    version: "1.0.0",
+    name: "0x protocol",
+    version: "2",
     chainID: 1,
-    verifyingContract: nil,
+    verifyingContract: "0x4f833a24e1f95d70f028921e27040ca56e09ab0b",
     salt: nil
 )
 
