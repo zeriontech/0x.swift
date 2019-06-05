@@ -71,7 +71,7 @@ let receipts = try sendingTxHash.receipt(
     )
 ```
 
-### Parsing logs from receipt
+### Parsing event from receipt
 ```swift
 let transfer = try ERC20Events.Transfer(
         log: receipt.logs()[0]
@@ -79,6 +79,16 @@ let transfer = try ERC20Events.Transfer(
 print(transfer.from.toPrefixedHexString())
 print(transfer.to.toPrefixedHexString())
 print(transfer.value.toDecimalString())
+```
+
+### Parsing logs from receipt
+```swift
+let events = ABIEvent.parse(types: [
+        ERC20Events.Transfer.self,
+        ERC20Events.Approval.self
+    ], logs: receipt.logs())
+    
+let transfers = events.filter( $0.signature() == ERC20Events.Transfer.signature())
 ```
 
 ## Working with typed data
