@@ -61,4 +61,9 @@ extension ABIEvent {
         let signatureString = name + "(\(types.map { $0.type.abiType() }.joined(separator: ",")))"
         return try signatureString.data().sha3(.keccak256)
     }
+    
+    public static func parse(types: [ABIEvent.Type], logs: [TransactionLog]) -> [ABIEvent] {
+     
+        return logs.flatMap { log in types.compactMap { type in try? type.init(log: log) }}
+    }
 }
