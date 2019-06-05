@@ -15,12 +15,6 @@ import Web3Swift
 
 @testable import Swifty0x
 
-
-func getEvents(types: [ABIEvent.Type], logs: [TransactionLog]) -> [ABIEvent] {
-    return logs.flatMap { log in types.compactMap { type in try? type.init(log: log) }}
-}
-
-
 struct MockedEIP712Domain: EIP712Representable {
     
     let name: String

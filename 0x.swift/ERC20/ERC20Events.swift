@@ -24,6 +24,7 @@ public struct ERC20Events {
         public let from: EthAddress
         public let to: EthAddress
         public let value: EthNumber
+        public let contract: EthAddress
         
         public init(log: TransactionLog) throws {
             
@@ -33,6 +34,7 @@ public struct ERC20Events {
             
             let decoder = ABIDecoder()
             
+            self.contract = try log.address()
             self.from = try decoder.decode(bytes: try log.topics()[1])
             self.to = try decoder.decode(bytes: try log.topics()[2])
             self.value = try decoder.decode(message: log.data(), index: 0)
@@ -50,6 +52,7 @@ public struct ERC20Events {
         public let owner: EthAddress
         public let spender: EthAddress
         public let value: EthNumber
+        public let contract: EthAddress
         
         public init(log: TransactionLog) throws {
             
@@ -59,6 +62,7 @@ public struct ERC20Events {
             
             let decoder = ABIDecoder()
             
+            self.contract = try log.address()
             self.owner = try decoder.decode(bytes: try log.topics()[1])
             self.spender = try decoder.decode(bytes: try log.topics()[2])
             self.value = try decoder.decode(message: log.data(), index: 0)

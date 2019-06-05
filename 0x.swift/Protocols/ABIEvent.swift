@@ -31,6 +31,8 @@ public protocol ABIEvent {
     static var types: [ABIEventType] { get }
 
     static func signature() throws -> Data
+
+    var contract: EthAddress { get }
     
     init(log: TransactionLog) throws
 }
