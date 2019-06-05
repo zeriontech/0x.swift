@@ -94,7 +94,7 @@ let events = ABIEvent.parse(types: [
 let transfers = events.filter { $0.signature() == ERC20Events.Transfer.signature() }
 
 let contract = EthAddress(hex: "0x606af0bd4501855914b50e2672c5926b896737ef")
-let zrxTransfers = events.filter { $0.contract == contract }
+let zrxTransfers = transfers.filter { $0.contract == contract }
 ```
 
 ## Working with typed data
