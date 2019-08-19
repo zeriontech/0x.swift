@@ -4,8 +4,8 @@ PODS:
   - BigInt (3.1.0):
     - SipHash (~> 1.2)
   - CryptoSwift (1.0.0)
-  - Nimble (8.0.1)
-  - Quick (2.0.0)
+  - Nimble (8.0.2)
+  - Quick (2.1.0)
   - secp256k1_ios (0.1.3)
   - SipHash (1.2.2)
   - SwiftyJSON (4.3.0)
@@ -19,7 +19,7 @@ DEPENDENCIES:
   - 0x.swift (from `../`)
   - Nimble (~> 8.0)
   - Quick (~> 2.0)
-  - Web3Swift.io (from `https://github.com/zeriontech/Web3Swift.git`, branch `216_log_fetching`)
+  - Web3Swift.io (from `https://github.com/zeriontech/Web3Swift.git`, branch `develop`)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -35,25 +35,25 @@ EXTERNAL SOURCES:
   0x.swift:
     :path: "../"
   Web3Swift.io:
-    :branch: 216_log_fetching
+    :branch: develop
     :git: https://github.com/zeriontech/Web3Swift.git
 
 CHECKOUT OPTIONS:
   Web3Swift.io:
-    :commit: 8c9f19e0b63434f2e7ba388feaa7e67478983eb0
+    :commit: ecbdab3455a0ff8c5a92626a211b280923c53156
     :git: https://github.com/zeriontech/Web3Swift.git
 
 SPEC CHECKSUMS:
-  0x.swift: b8b5adbef53342787919fcd156f6f3c3b226113d
+  0x.swift: 9978355162bb8d0af4a03c33f2ba427625c4db8a
   BigInt: 76b5dfdfa3e2e478d4ffdf161aeede5502e2742f
   CryptoSwift: d81eeaa59dc5a8d03720fe919a6fd07b51f7439f
-  Nimble: 45f786ae66faa9a709624227fae502db55a8bdd0
-  Quick: ce1276c7c27ba2da3cb2fd0cde053c3648b3b22d
+  Nimble: 622629381bda1dd5678162f21f1368cec7cbba60
+  Quick: 4be43f6634acfa727dd106bdf3929ce125ffa79d
   secp256k1_ios: ac9ef04e761f43c58012b28548afa91493761f17
   SipHash: fad90a4683e420c52ef28063063dbbce248ea6d4
   SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
   Web3Swift.io: 767a6d8d411ef1b9178d52bf7883ac8866f25f14
 
-PODFILE CHECKSUM: 2f12ecb667446483a04e6bf937fb822a60bcc9bb
+PODFILE CHECKSUM: 6476d607d1aa4390ca1236c521167045f6218524
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.6.1

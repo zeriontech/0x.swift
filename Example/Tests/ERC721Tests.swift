@@ -23,10 +23,7 @@ class ERC721Tests: XCTestCase {
         contract: EthAddress(
             hex: "0x06012c8cf97bead5deae237070f9587f8e7a266d"
         ),
-        network: AlchemyNetwork(
-            chain: "mainnet",
-            apiKey: "ETi2ntZoWxd6nTI1qE13Q4I1eLB8AMDl"
-        )
+        network: MainnetAlchemyNetwork()
     )
     
     let kittyOwner = EthAddress(

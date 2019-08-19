@@ -25,10 +25,7 @@ class ERC20Tests: XCTestCase {
         contract: EthAddress(
             hex: "0xe41d2489571d322189246dafa5ebde1f4699f498"
         ),
-        network: AlchemyNetwork(
-            chain: "mainnet",
-            apiKey: "ETi2ntZoWxd6nTI1qE13Q4I1eLB8AMDl"
-        )
+        network: MainnetAlchemyNetwork()
     )
 
     //ZRX foundation address

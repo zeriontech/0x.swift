@@ -15,6 +15,8 @@
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		607FACEC1AFB9204008FA782 /* TypedDataHashingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* TypedDataHashingTests.swift */; };
 		69E3DCD5DBD45D8523CAEBB0 /* Pods_0x_swift_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1738E9DA7270A89C39F6BF00 /* Pods_0x_swift_Example.framework */; };
+		8C167C9D230B58760017D115 /* MainnetAlchemyNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C167C9B230B57920017D115 /* MainnetAlchemyNetwork.swift */; };
+		8C167C9E230B58780017D115 /* MainnetAlchemyNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C167C9B230B57920017D115 /* MainnetAlchemyNetwork.swift */; };
 		8C4497E62266D5DE00EF8575 /* ERC20Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C4497E52266D5DE00EF8575 /* ERC20Tests.swift */; };
 		8CEAE6322272E76E005C4232 /* ERC721Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CEAE6312272E76E005C4232 /* ERC721Tests.swift */; };
 		F8C93A1F229840330095E26A /* EventsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C93A1D22983DAC0095E26A /* EventsTests.swift */; };
@@ -48,6 +50,7 @@
 		607FACEB1AFB9204008FA782 /* TypedDataHashingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypedDataHashingTests.swift; sourceTree = "<group>"; };
 		757D36C4F3E3885AC758EC52 /* Pods-0x.swift_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-0x.swift_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-0x.swift_Tests/Pods-0x.swift_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		86341ABFD183519F8F50F428 /* Pods-0x.swift_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-0x.swift_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-0x.swift_Tests/Pods-0x.swift_Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		8C167C9B230B57920017D115 /* MainnetAlchemyNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainnetAlchemyNetwork.swift; sourceTree = "<group>"; };
 		8C4497E52266D5DE00EF8575 /* ERC20Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ERC20Tests.swift; sourceTree = "<group>"; };
 		8CEAE6312272E76E005C4232 /* ERC721Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ERC721Tests.swift; sourceTree = "<group>"; };
 		991A165F7019A3C43B3521DB /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
@@ -97,6 +100,7 @@
 		607FACC71AFB9204008FA782 = {
 			isa = PBXGroup;
 			children = (
+				8C167C9A230B57830017D115 /* Network */,
 				607FACF51AFB993E008FA782 /* Podspec Metadata */,
 				607FACD21AFB9204008FA782 /* Example for 0x.swift */,
 				607FACE81AFB9204008FA782 /* Tests */,
@@ -176,6 +180,14 @@
 				E93D3BE9BE040FC9C10164D3 /* Pods_0x_swift_Tests.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8C167C9A230B57830017D115 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				8C167C9B230B57920017D115 /* MainnetAlchemyNetwork.swift */,
+			);
+			path = Network;
 			sourceTree = "<group>";
 		};
 		F8E3C116226803EF00AE766F /* TypedData */ = {
@@ -349,7 +361,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-0x.swift_Tests/Pods-0x.swift_Tests-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-0x.swift_Tests/Pods-0x.swift_Tests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/0x.swift/Swifty0x.framework",
 				"${BUILT_PRODUCTS_DIR}/BigInt/BigInt.framework",
 				"${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework",
@@ -376,7 +388,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-0x.swift_Tests/Pods-0x.swift_Tests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-0x.swift_Tests/Pods-0x.swift_Tests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		8D0969F40739A58A2056AAE9 /* [CP] Embed Pods Frameworks */ = {
@@ -387,7 +399,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-0x.swift_Example/Pods-0x.swift_Example-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-0x.swift_Example/Pods-0x.swift_Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/0x.swift/Swifty0x.framework",
 				"${BUILT_PRODUCTS_DIR}/BigInt/BigInt.framework",
 				"${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework",
@@ -410,7 +422,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-0x.swift_Example/Pods-0x.swift_Example-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-0x.swift_Example/Pods-0x.swift_Example-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -420,6 +432,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C167C9E230B58780017D115 /* MainnetAlchemyNetwork.swift in Sources */,
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 			);
@@ -432,6 +445,7 @@
 				F8C93A23229856E00095E26A /* TypedDataObjectHashingTests.swift in Sources */,
 				F8C93A1F229840330095E26A /* EventsTests.swift in Sources */,
 				8C4497E62266D5DE00EF8575 /* ERC20Tests.swift in Sources */,
+				8C167C9D230B58760017D115 /* MainnetAlchemyNetwork.swift in Sources */,
 				8CEAE6322272E76E005C4232 /* ERC721Tests.swift in Sources */,
 				607FACEC1AFB9204008FA782 /* TypedDataHashingTests.swift in Sources */,
 			);
